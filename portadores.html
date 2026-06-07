@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portadores de llum — Fitxa de personatge</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --bg: #fff;
+    --line: #999;
+    --accent: #444;
+    --page-w: 210mm;
+    --page-h: 297mm;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'EB Garamond', 'Georgia', serif;
+    color: var(--ink);
+    background: #e8e4df;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+    gap: 24px;
+  }
+
+  /* --- Controls bar --- */
+  .controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #2c2c2c;
+    color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 16px;
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  }
+  .controls button {
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+    padding: 5px 14px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background: #444;
+    color: #eee;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .controls button:hover { background: #555; }
+  .controls button.danger { border-color: #a33; }
+  .controls button.danger:hover { background: #a33; }
+  .controls a.home {
+    color: #ccc;
+    text-decoration: none;
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 5px 12px;
+    transition: background .15s;
+  }
+  .controls a.home:hover { background: #444; }
+  .controls .save-status {
+    font-size: 11px;
+    color: #8f8;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .controls .save-status.show { opacity: 1; }
+
+  /* --- Page --- */
+  .page {
+    width: var(--page-w);
+    min-height: var(--page-h);
+    background: var(--bg);
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    padding: 16mm 18mm;
+    position: relative;
+    page-break-after: always;
+  }
+  .page:first-of-type { margin-top: 48px; }
+
+  /* --- Inputs --- */
+  input[type="text"] {
+    font-family: 'EB Garamond', 'Georgia', serif;
+    font-size: 11pt;
+    color: var(--ink);
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    outline: none;
+    padding: 1px 4px;
+    transition: border-color .2s;
+  }
+  input[type="text"]:focus { border-bottom-color: var(--ink); }
+
+  input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--ink);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* --- Header --- */
+  .title {
+    font-size: 30pt;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1;
+  }
+  .subtitle {
+    font-size: 11pt;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  h2 {
+    font-size: 17pt;
+    font-weight: 600;
+    font-style: italic;
+    text-align: center;
+    margin: 4px 0 8px;
+  }
+
+  .instructions {
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #444;
+    line-height: 1.35;
+  }
+
+  /* --- Nom --- */
+  .nom-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .nom-row label { font-size: 13pt; }
+  .nom-row input { flex: 1; font-size: 13pt; }
+
+  /* --- Attributes --- */
+  .attrs {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .attr {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .attr label {
+    font-size: 13pt;
+  }
+  .attr input[type="text"] {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    text-align: center;
+    font-size: 13pt;
+  }
+
+  /* --- Three columns: Equip / Fragments / Condicions --- */
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0 24px;
+    margin-bottom: 22px;
+  }
+  .col h2 { margin-top: 0; }
+  .line-row {
+    margin-bottom: 6px;
+  }
+  .line-row input[type="text"] { width: 100%; }
+
+  /* --- Portadora de llum --- */
+  .portadora {
+    margin-bottom: 22px;
+  }
+  .portadora .line-row { max-width: 70%; margin: 0 auto 6px; }
+
+  /* --- Moviments --- */
+  .moviments-title {
+    font-size: 16pt;
+    font-weight: 600;
+    font-style: italic;
+    margin: 6px 0 10px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 4px;
+  }
+  .mov-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 24px;
+  }
+  .mov-item {
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+  .mov-item input[type="checkbox"] { margin-top: 2px; }
+  .mov-item .mov-name { font-weight: 600; }
+
+  /* --- Map page --- */
+  .page.landscape { width: 297mm; min-height: 210mm; }
+
+  .map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 340px) 1fr;
+    gap: 28px;
+    height: 100%;
+  }
+  .map-title {
+    font-size: 19pt;
+    font-weight: 400;
+    font-style: italic;
+    text-align: left;
+    margin: 0 0 8px;
+  }
+  .map-col { display: flex; flex-direction: column; }
+
+  .hex-map-wrap {
+    background: #efece7;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+  }
+  .hex-map { width: 100%; height: auto; display: block; touch-action: manipulation; }
+  .hex { fill: #fff; stroke: #999; stroke-width: 1.4; cursor: pointer; transition: fill .12s; }
+  .hex:hover { fill: #f3ead4; }
+  .hex.filled { fill: #faf6ec; }
+  text.hex-icon {
+    font-size: 22px;
+    dominant-baseline: central;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hex-legend {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px 14px;
+    margin-top: 10px;
+    font-size: 8.5pt;
+    color: #555;
+  }
+  .hex-legend .leg { display: flex; align-items: center; gap: 6px; }
+  .hex-legend .leg .ic { font-size: 13px; width: 18px; text-align: center; }
+  .hex-legend .leg .card { color: #aaa; margin-left: auto; font-family: 'Georgia', serif; }
+
+  /* Territory picker popover */
+  .terr-picker {
+    position: absolute;
+    z-index: 400;
+    background: #1e1e1e;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 6px;
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    font-family: system-ui, sans-serif;
+    width: 290px;
+  }
+  .terr-picker.open { display: grid; }
+  .terr-picker button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #2c2c2c;
+    border: 1px solid #3a3a3a;
+    color: #ddd;
+    border-radius: 5px;
+    padding: 5px 7px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 12px;
+    font-family: system-ui, sans-serif;
+  }
+  .terr-picker button:hover { background: #3a3a3a; }
+  .terr-picker button .ic { font-size: 15px; width: 18px; text-align: center; }
+  .terr-picker button.clear { grid-column: 1 / -1; justify-content: center; color: #e88; }
+
+  /* Territory cards */
+  .terr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 20px;
+  }
+  .terr-card { display: flex; flex-direction: column; gap: 3px; }
+  .terr-card .terr-row { display: flex; align-items: center; gap: 6px; }
+  .terr-card .terr-row label { font-size: 10pt; font-style: italic; min-width: 32px; }
+  .terr-card .terr-row input[type="text"] { flex: 1; }
+  .terr-coord {
+    font-family: 'Georgia', serif;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #fff;
+    background: #2c2c2c;
+    border-radius: 4px;
+    padding: 1px 7px;
+    min-width: 30px;
+    text-align: center;
+  }
+  .terr-empty { grid-column: 1 / -1; }
+  .terr-card select {
+    flex: 1;
+    font-family: 'EB Garamond', 'Georgia', serif;
+    font-size: 10.5pt;
+    color: var(--ink);
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    outline: none;
+    padding: 1px 2px;
+    cursor: pointer;
+  }
+  .terr-card select:focus { border-bottom-color: var(--ink); }
+  .terr-loc-lines { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+  .terr-loc-lines input[type="text"] { width: 100%; font-size: 10pt; }
+
+  /* --- Card System --- */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 150;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .playing-card {
+    width: 76px;
+    height: 106px;
+    border-radius: 7px;
+    background: #fff;
+    border: 1.5px solid #bbb;
+    box-shadow: 1px 2px 6px rgba(0,0,0,.22);
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    pointer-events: auto;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3px 5px;
+    font-family: 'Georgia', serif;
+    transition: box-shadow .12s, transform .12s;
+  }
+  .playing-card:hover { box-shadow: 2px 4px 14px rgba(0,0,0,.30); transform: translateY(-2px); }
+  .playing-card:hover .card-return-btn { opacity: 1; }
+
+  .card-return-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #c0392b;
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s, transform .1s;
+    z-index: 10;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    font-family: system-ui, sans-serif;
+    padding: 0;
+  }
+  .card-return-btn:hover { transform: scale(1.2); background: #e74c3c; }
+
+  .playing-card.dragging {
+    cursor: grabbing;
+    box-shadow: 6px 10px 24px rgba(0,0,0,.35);
+    z-index: 9999 !important;
+    transform: scale(1.06) rotate(2deg);
+    transition: none;
+  }
+  .playing-card.red  { color: #c0392b; }
+  .playing-card.black { color: #1a1a1a; }
+
+  .playing-card .card-simple {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    line-height: 1;
+    gap: 2px;
+  }
+  .playing-card .card-simple .rank { font-size: 28px; font-weight: 700; }
+  .playing-card .card-simple .suit-sym { font-size: 22px; }
+
+  /* Card back */
+  .card-back-face {
+    width: 76px;
+    height: 106px;
+    border-radius: 7px;
+    border: 1.5px solid #333;
+    background: #000;
+    box-shadow: 1px 2px 6px rgba(0,0,0,.25);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-back-face::after {
+    content: '';
+    width: 56px;
+    height: 86px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 4px;
+  }
+  .card-back-face:hover { box-shadow: 2px 4px 14px rgba(0,0,0,.35); }
+
+  /* Deck stack effect */
+  .deck-stack {
+    position: relative;
+    width: 76px;
+    height: 106px;
+    cursor: pointer;
+  }
+  .deck-stack .stack-shadow {
+    position: absolute;
+    width: 76px;
+    height: 106px;
+    border-radius: 7px;
+    background: #000;
+    border: 1px solid #333;
+  }
+  .deck-stack .stack-shadow:nth-child(1) { top: 4px; left: 4px; opacity: .3; }
+  .deck-stack .stack-shadow:nth-child(2) { top: 2px; left: 2px; opacity: .5; }
+  .deck-stack .card-back-face { position: relative; z-index: 2; }
+  .deck-count {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    color: #999;
+    white-space: nowrap;
+  }
+  .deck-stack.empty .stack-shadow,
+  .deck-stack.empty .card-back-face { opacity: .25; }
+
+  /* Card play surface */
+  .play-surface {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr;
+    gap: 0;
+    height: calc(var(--page-h) - 32mm);
+  }
+
+  .pile-zone {
+    border: 2px solid var(--ink);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+  }
+  .pile-zone h2 { margin: 0 0 6px; font-size: 16pt; }
+  .pile-zone .zone-hint {
+    font-size: 9pt;
+    font-style: italic;
+    color: #999;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .deck-zone {
+    border: 2px solid var(--ink);
+    padding: 16px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-width: 160px;
+  }
+  .deck-zone h2 { margin: 0; font-size: 15pt; text-align: center; }
+
+  .deck-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    width: 100%;
+  }
+  .deck-buttons button {
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #f0f0f0;
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .deck-buttons button:hover { background: #ddd; }
+  .deck-buttons button.primary {
+    background: linear-gradient(135deg, #c9952b, #e6b84d);
+    border-color: #b8862a;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .deck-buttons button.primary:hover { background: linear-gradient(135deg, #d9a53b, #f0c55d); }
+
+  /* --- Dice Roller --- */
+  .dice-fab {
+    position: fixed;
+    bottom: 24px;
+    right: calc(50% - var(--page-w) / 2 + 20px);
+    z-index: 200;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #2c2c2c;
+    color: #fff;
+    border: 2px solid #555;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .15s, background .15s;
+    user-select: none;
+  }
+  .dice-fab:hover { transform: scale(1.1); background: #444; }
+
+  .dice-panel {
+    position: fixed;
+    bottom: 92px;
+    right: calc(50% - var(--page-w) / 2 + 20px);
+    z-index: 199;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    padding: 20px 24px 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.45);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    min-width: 220px;
+    font-family: system-ui, sans-serif;
+    color: #eee;
+  }
+  .dice-panel.open { display: flex; }
+  .dice-panel h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ccc;
+    letter-spacing: .5px;
+  }
+
+  .dice-stage {
+    display: flex;
+    gap: 28px;
+    perspective: 500px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dice-scene {
+    width: 60px;
+    height: 60px;
+    perspective: 500px;
+  }
+  .dice-cube {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .1s;
+  }
+  .dice-cube.rolling {
+    animation: diceRoll .8s ease-out;
+  }
+  .dice-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: #f5f0e8;
+    border: 2px solid #bbb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 8px rgba(0,0,0,.08);
+  }
+  /* Pip layout */
+  .dice-face .pips {
+    display: grid;
+    grid-template-columns: repeat(3, 14px);
+    grid-template-rows: repeat(3, 14px);
+    gap: 2px;
+    padding: 2px;
+  }
+  .dice-face .pip {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #222;
+  }
+  .dice-face .pip.empty { background: transparent; }
+
+  /* Face positions */
+  .dice-face.f1 { transform: rotateY(  0deg) translateZ(30px); }
+  .dice-face.f2 { transform: rotateY(180deg) translateZ(30px); }
+  .dice-face.f3 { transform: rotateY(-90deg) translateZ(30px); }
+  .dice-face.f4 { transform: rotateY( 90deg) translateZ(30px); }
+  .dice-face.f5 { transform: rotateX( 90deg) translateZ(30px); }
+  .dice-face.f6 { transform: rotateX(-90deg) translateZ(30px); }
+
+  @keyframes diceRoll {
+    0%   { transform: rotateX(0)     rotateY(0)     rotateZ(0); }
+    20%  { transform: rotateX(280deg) rotateY(200deg) rotateZ(80deg); }
+    40%  { transform: rotateX(520deg) rotateY(430deg) rotateZ(170deg); }
+    60%  { transform: rotateX(680deg) rotateY(600deg) rotateZ(250deg); }
+    80%  { transform: rotateX(790deg) rotateY(710deg) rotateZ(300deg); }
+    100% { transform: var(--final-rotation); }
+  }
+
+  .dice-result {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dice-result .total {
+    background: linear-gradient(135deg, #c9952b, #f0d060);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dice-result .breakdown {
+    font-size: 13px;
+    color: #888;
+    font-weight: 400;
+  }
+
+  .dice-roll-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 28px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #c9952b, #e6b84d);
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: transform .1s, box-shadow .15s;
+    letter-spacing: .3px;
+  }
+  .dice-roll-btn:hover { transform: scale(1.05); box-shadow: 0 2px 12px rgba(201,149,43,.4); }
+  .dice-roll-btn:active { transform: scale(.97); }
+
+  /* --- Print --- */
+  @media print {
+    body { background: #fff; padding: 0; gap: 0; }
+    .controls { display: none; }
+    .dice-fab, .dice-panel { display: none !important; }
+    .card-overlay { display: none !important; }
+    .terr-picker { display: none !important; }
+    .page.landscape { page: landscape; }
+    @page landscape { size: A4 landscape; margin: 0; }
+    .page {
+      box-shadow: none;
+      margin: 0 !important;
+      width: 100%;
+      min-height: auto;
+      padding: 12mm 14mm;
+    }
+    @page { size: A4 portrait; margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Controls -->
+<div class="controls">
+  <a href="index.html" class="home">&#8592; Inici</a>
+  <strong>Portadores de llum — Fitxa editable</strong>
+  <button onclick="saveState()">Desar</button>
+  <button onclick="exportJSON()">Exportar JSON</button>
+  <button onclick="document.getElementById('importFile').click()">Carregar JSON</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(this)">
+  <button onclick="window.print()">Imprimir / PDF</button>
+  <button class="danger" onclick="clearState()">Esborrar tot</button>
+  <span class="save-status" id="saveStatus">Desat!</span>
+</div>
+
+<!-- ==================== PAGE 1 — Guardià de l'esperança ==================== -->
+<div class="page" id="page1">
+  <div class="title">Guardi&agrave; de l'esperan&ccedil;a</div>
+  <div class="subtitle">Fitxa de personatge</div>
+
+  <div class="nom-row">
+    <label>Nom</label>
+    <input type="text" data-key="nom">
+  </div>
+
+  <!-- Atributs -->
+  <div class="attrs">
+    <div class="attr"><label>For.</label><input type="text" data-key="attr_for"></div>
+    <div class="attr"><label>Des.</label><input type="text" data-key="attr_des"></div>
+    <div class="attr"><label>Ast.</label><input type="text" data-key="attr_ast"></div>
+    <div class="attr"><label>Vol.</label><input type="text" data-key="attr_vol"></div>
+    <div class="attr"><label>Car.</label><input type="text" data-key="attr_car"></div>
+  </div>
+
+  <!-- Equip / Fragments / Condicions -->
+  <div class="three-col">
+    <div class="col">
+      <h2>Equip</h2>
+      <div id="equipRows"></div>
+    </div>
+    <div class="col">
+      <h2>Fragments</h2>
+      <div id="fragmentsRows"></div>
+    </div>
+    <div class="col">
+      <h2>Condicions</h2>
+      <div id="condicionsRows"></div>
+    </div>
+  </div>
+
+  <!-- Portadora de llum -->
+  <div class="portadora">
+    <h2>Portadora de llum</h2>
+    <div id="portadoraRows"></div>
+  </div>
+
+  <!-- Moviments -->
+  <div class="moviments-title">Moviments</div>
+  <div class="mov-grid" id="movGrid"></div>
+</div>
+
+<!-- ==================== PAGE 2 — Cartes ==================== -->
+<div class="page" id="cardsPage">
+  <div class="play-surface">
+    <!-- Pila de recursos -->
+    <div class="pile-zone" id="zoneRecursos">
+      <h2>Pila de recursos</h2>
+      <span class="zone-hint">Arrossega cartes aqu&iacute;</span>
+    </div>
+
+    <!-- Pila d'aventura (deck) -->
+    <div class="deck-zone">
+      <h2>Pila<br>d'aventura</h2>
+      <div class="deck-stack" id="deckStack" onclick="drawCard()">
+        <div class="stack-shadow"></div>
+        <div class="stack-shadow"></div>
+        <div class="card-back-face"></div>
+        <span class="deck-count" id="deckCount">52 cartes</span>
+      </div>
+      <div class="deck-buttons">
+        <button class="primary" onclick="drawCard()">Treure carta</button>
+        <button onclick="shuffleDeck()">Barrejar</button>
+        <button onclick="returnAllCards()">Tornar totes</button>
+      </div>
+    </div>
+
+    <!-- Pila del destí -->
+    <div class="pile-zone" id="zoneDesti">
+      <h2>Pila del dest&iacute;</h2>
+      <span class="zone-hint">Arrossega cartes aqu&iacute;</span>
+    </div>
+  </div>
+  <!-- Overlay for draggable cards (inside cardsPage so coords are relative) -->
+  <div class="card-overlay" id="cardOverlay"></div>
+</div>
+
+<!-- ==================== PAGE 3 — Mapa ==================== -->
+<div class="page landscape" id="mapPage">
+  <div class="map-layout">
+    <div class="map-col">
+      <h2 class="map-title">Terres interiors</h2>
+      <p class="instructions">Cada hex&agrave;gon &eacute;s un territori. Fes clic per assignar-li un tipus i la seva ic&ograve;na es dibuixa sola. (En viatjar, tira la carta per decidir el tipus.)</p>
+      <div class="hex-map-wrap">
+        <svg class="hex-map" id="hexMap" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="hex-legend" id="hexLegend"></div>
+    </div>
+    <div class="terr-col">
+      <h2 class="map-title">Territoris</h2>
+      <div class="terr-grid" id="terrGrid"></div>
+    </div>
+  </div>
+  <!-- Territory type picker (positioned relative to mapPage) -->
+  <div class="terr-picker" id="terrPicker"></div>
+</div>
+
+<!-- ==================== DICE ROLLER ==================== -->
+<button class="dice-fab" onclick="toggleDicePanel()" title="Llan&ccedil;ar daus">&#9860;</button>
+<div class="dice-panel" id="dicePanel">
+  <h3>2d6</h3>
+  <div class="dice-stage">
+    <div class="dice-scene">
+      <div class="dice-cube" id="die1"></div>
+    </div>
+    <div class="dice-scene">
+      <div class="dice-cube" id="die2"></div>
+    </div>
+  </div>
+  <div class="dice-result" id="diceResult"></div>
+  <button class="dice-roll-btn" onclick="rollDice()">Llan&ccedil;ar!</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'portadores_guardia_v1';
+
+/* Moviments propis del Guardià de l'esperança */
+const MOVIMENTS = [
+  { name: 'Atac poder&oacute;s', text: 'una vegada al dia pots repetir una tirada de combat.' },
+  { name: 'Defensar', text: 'permet perdre una carta aleat&ograve;ria de recursos a canvi d\'evitar les condicions conseq&uuml;&egrave;ncies d\'un atac a tu o a un aliat.' },
+  { name: 'Inspirar', text: 'permet curar una condici&oacute; mental adicional en el moviment de descansar si fas una reflexi&oacute; o discurs inspirador.' },
+  { name: 'Fabricar arma/armadura', text: 'permet gastar una carta de figura de recursos durant la posta per fabricar una arma o armadura. Nom&eacute;s en territoris de ciutat o poblat.' },
+  { name: 'Intimidant', text: 'permet fer el moviment de parlamentar sumant els atributs de carisma i for&ccedil;a alhora.' },
+  { name: 'Pell de ferro', text: 'si no tens cap condici&oacute;, la primera condici&oacute; que reps en un combat s\'ignora.' },
+];
+
+/* ---- Generate dynamic rows ---- */
+function init() {
+  // Equip: 10 lines
+  const equip = document.getElementById('equipRows');
+  for (let i = 0; i < 10; i++) {
+    const div = document.createElement('div');
+    div.className = 'line-row';
+    div.innerHTML = `<input type="text" data-key="equip_${i}">`;
+    equip.appendChild(div);
+  }
+
+  // Fragments: 5 lines
+  const frag = document.getElementById('fragmentsRows');
+  for (let i = 0; i < 5; i++) {
+    const div = document.createElement('div');
+    div.className = 'line-row';
+    div.innerHTML = `<input type="text" data-key="fragment_${i}">`;
+    frag.appendChild(div);
+  }
+
+  // Condicions: 5 lines
+  const cond = document.getElementById('condicionsRows');
+  for (let i = 0; i < 5; i++) {
+    const div = document.createElement('div');
+    div.className = 'line-row';
+    div.innerHTML = `<input type="text" data-key="cond_${i}">`;
+    cond.appendChild(div);
+  }
+
+  // Portadora de llum: 3 lines
+  const port = document.getElementById('portadoraRows');
+  for (let i = 0; i < 3; i++) {
+    const div = document.createElement('div');
+    div.className = 'line-row';
+    div.innerHTML = `<input type="text" data-key="portadora_${i}">`;
+    port.appendChild(div);
+  }
+
+  // Moviments
+  const movGrid = document.getElementById('movGrid');
+  MOVIMENTS.forEach((m, i) => {
+    const div = document.createElement('div');
+    div.className = 'mov-item';
+    div.innerHTML = `<input type="checkbox" data-key="mov_${i}"><span><span class="mov-name">${m.name}:</span> ${m.text}</span>`;
+    movGrid.appendChild(div);
+  });
+
+  // Map: hex grid + territory cards (built before loadState so saved values apply)
+  buildMap();
+
+  loadState();
+  attachAutoSave();
+}
+
+/* ---- Save / Load ---- */
+function gatherState() {
+  const state = {};
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (el.type === 'checkbox') state[k] = el.checked;
+    else state[k] = el.value;
+  });
+  // Save cards
+  state._deck = deck;
+  state._drawnCards = drawnCards;
+  // Save map / territories
+  state._territoris = territoris;
+  return state;
+}
+
+function applyState(state) {
+  if (!state) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (!(k in state)) return;
+    if (el.type === 'checkbox') el.checked = state[k];
+    else el.value = state[k];
+  });
+  // Restore cards
+  if (state._deck) deck = state._deck;
+  if (state._drawnCards) drawnCards = state._drawnCards;
+  // Restore map / territories
+  if (state._territoris) {
+    territoris = state._territoris;
+    renderAllHexes();
+    renderTerritoryPanel();
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gatherState()));
+    flashSave();
+  } catch (e) {
+    console.error('Error saving:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) applyState(JSON.parse(raw));
+  } catch (e) {
+    console.error('Error loading:', e);
+  }
+}
+
+function clearState() {
+  if (!confirm('Segur que vols esborrar totes les dades? Aquesta acci&oacute; no es pot desfer.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('[data-key]').forEach(el => {
+    if (el.type === 'checkbox') el.checked = false;
+    else el.value = '';
+  });
+  // Reset cards
+  document.getElementById('cardOverlay').innerHTML = '';
+  drawnCards = [];
+  deck = shuffleArray(buildFullDeck());
+  updateDeckCount();
+  // Reset map / territories
+  territoris = {};
+  renderAllHexes();
+  renderTerritoryPanel();
+  flashSave('Esborrat!');
+}
+
+function flashSave(msg) {
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg || 'Desat!';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+/* Auto-save on any change */
+function attachAutoSave() {
+  let timer;
+  const debounceSave = () => { clearTimeout(timer); timer = setTimeout(saveState, 800); };
+  document.querySelectorAll('input[type="text"]').forEach(el => {
+    el.addEventListener('input', debounceSave);
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    el.addEventListener('change', debounceSave);
+  });
+}
+
+/* ---- Export / Import JSON ---- */
+function exportJSON() {
+  const state = gatherState();
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const nom = (document.querySelector('[data-key="nom"]').value || 'portadores').replace(/\s+/g, '_');
+  a.download = nom + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  flashSave('Exportat!');
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const state = JSON.parse(e.target.result);
+      applyState(state);
+      // Restore cards
+      if (state._deck) deck = state._deck;
+      if (state._drawnCards) drawnCards = state._drawnCards;
+      updateDeckCount();
+      restoreDrawnCards();
+      saveState();
+      flashSave('Carregat!');
+    } catch (err) {
+      alert('Error llegint el fitxer: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+/* ---- Map System ---- */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+// Territory types and the viatjar card that generates each (see docs/portadores.md)
+const TERRITORIS = [
+  { id: 'poblat',    nom: 'Poblat',         icon: '🏘️', carta: 'A'  },
+  { id: 'ciutat',    nom: 'Ciutat',         icon: '🏰', carta: '2'  },
+  { id: 'camp',      nom: 'Camp',           icon: '🌾', carta: '3'  },
+  { id: 'bosc',      nom: 'Bosc',           icon: '🌲', carta: '4'  },
+  { id: 'aiguamolls',nom: 'Aiguamolls',     icon: '🪷', carta: '5'  },
+  { id: 'desert',    nom: 'Àrid / Desert',  icon: '🏜️', carta: '6'  },
+  { id: 'muntanyes', nom: 'Muntanyes',      icon: '⛰️', carta: '7'  },
+  { id: 'costa',     nom: 'Costa',          icon: '🏖️', carta: '8'  },
+  { id: 'jungla',    nom: 'Jungla',         icon: '🌴', carta: '9'  },
+  { id: 'ruines',    nom: 'Ruïnes',         icon: '🏛️', carta: '10' },
+  { id: 'fosca',     nom: 'Terra fosca',    icon: '🌑', carta: 'J'  },
+  { id: 'cremada',   nom: 'Terra cremada',  icon: '🔥', carta: 'Q'  },
+  { id: 'corrupte',  nom: 'Terra corrupte', icon: '☠️', carta: 'K'  },
+];
+const TERR_BY_ID = Object.fromEntries(TERRITORIS.map(t => [t.id, t]));
+
+const HEX_COLS = 6, HEX_ROWS = 8, HEX_SIZE = 26, HEX_MARGIN = 6;
+
+// Each filled hex gets a linked territory: { tipus, nom, loc:[5 strings] }
+let territoris = {};    // { hexIndex: territory }
+let pickerHex = null;   // hex index currently being edited
+
+// Map a hex index (built column-major) to a coordinate label like "A1"
+function coordLabel(i) {
+  const c = Math.floor(i / HEX_ROWS);
+  const r = i % HEX_ROWS;
+  return String.fromCharCode(65 + c) + (r + 1);
+}
+
+let _terrSaveTimer;
+function queueSave() { clearTimeout(_terrSaveTimer); _terrSaveTimer = setTimeout(saveState, 600); }
+
+function buildHexMap() {
+  const svg = document.getElementById('hexMap');
+  const s = HEX_SIZE, m = HEX_MARGIN;
+  const hexW = 2 * s;
+  const hexH = Math.sqrt(3) * s;
+  const colSp = 1.5 * s;
+  const vbW = m * 2 + (HEX_COLS - 1) * colSp + hexW;
+  const vbH = m * 2 + HEX_ROWS * hexH + hexH / 2;
+  svg.setAttribute('viewBox', `0 0 ${vbW.toFixed(1)} ${vbH.toFixed(1)}`);
+  svg.innerHTML = '';
+
+  let i = 0;
+  for (let c = 0; c < HEX_COLS; c++) {
+    for (let r = 0; r < HEX_ROWS; r++) {
+      const cx = m + s + c * colSp;
+      const cy = m + hexH / 2 + r * hexH + (c % 2 ? hexH / 2 : 0);
+      const pts = [];
+      for (let a = 0; a < 6; a++) {
+        const ang = Math.PI / 180 * (60 * a);
+        pts.push(`${(cx + s * Math.cos(ang)).toFixed(1)},${(cy + s * Math.sin(ang)).toFixed(1)}`);
+      }
+      const g = document.createElementNS(SVG_NS, 'g');
+      g.setAttribute('class', 'hex-cell');
+      g.dataset.i = i;
+      const poly = document.createElementNS(SVG_NS, 'polygon');
+      poly.setAttribute('class', 'hex');
+      poly.setAttribute('points', pts.join(' '));
+      const txt = document.createElementNS(SVG_NS, 'text');
+      txt.setAttribute('class', 'hex-icon');
+      txt.setAttribute('x', cx.toFixed(1));
+      txt.setAttribute('y', cy.toFixed(1));
+      g.appendChild(poly);
+      g.appendChild(txt);
+      const idx = i;
+      g.addEventListener('click', e => openPicker(idx, e));
+      svg.appendChild(g);
+      i++;
+    }
+  }
+}
+
+function renderHex(i) {
+  const g = document.querySelector(`.hex-cell[data-i="${i}"]`);
+  if (!g) return;
+  const poly = g.querySelector('.hex');
+  const txt = g.querySelector('.hex-icon');
+  const terr = territoris[i];
+  const t = terr && TERR_BY_ID[terr.tipus];
+  if (t) { poly.classList.add('filled'); txt.textContent = t.icon; }
+  else { poly.classList.remove('filled'); txt.textContent = ''; }
+}
+
+function renderAllHexes() {
+  document.querySelectorAll('.hex-cell').forEach(g => renderHex(parseInt(g.dataset.i)));
+}
+
+function buildLegend() {
+  const leg = document.getElementById('hexLegend');
+  leg.innerHTML = '';
+  TERRITORIS.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'leg';
+    d.innerHTML = `<span class="ic">${t.icon}</span><span>${t.nom}</span><span class="card">${t.carta}</span>`;
+    leg.appendChild(d);
+  });
+}
+
+function buildPicker() {
+  const picker = document.getElementById('terrPicker');
+  picker.innerHTML = '';
+  TERRITORIS.forEach(t => {
+    const b = document.createElement('button');
+    b.innerHTML = `<span class="ic">${t.icon}</span><span>${t.nom}</span>`;
+    b.addEventListener('click', ev => { ev.stopPropagation(); setHexType(pickerHex, t.id); closePicker(); });
+    picker.appendChild(b);
+  });
+  const clr = document.createElement('button');
+  clr.className = 'clear';
+  clr.textContent = 'Esborrar';
+  clr.addEventListener('click', ev => { ev.stopPropagation(); setHexType(pickerHex, null); closePicker(); });
+  picker.appendChild(clr);
+}
+
+function openPicker(i, e) {
+  e.stopPropagation();
+  pickerHex = i;
+  const picker = document.getElementById('terrPicker');
+  const page = document.getElementById('mapPage');
+  const rect = page.getBoundingClientRect();
+  // Open first so its size is known, then keep it within the page bounds
+  picker.classList.add('open');
+  let x = e.clientX - rect.left;
+  let y = e.clientY - rect.top;
+  x = Math.min(x, page.clientWidth - picker.offsetWidth - 8);
+  y = Math.min(y, page.clientHeight - picker.offsetHeight - 8);
+  picker.style.left = Math.max(8, x) + 'px';
+  picker.style.top = Math.max(8, y) + 'px';
+}
+
+function closePicker() {
+  document.getElementById('terrPicker').classList.remove('open');
+  pickerHex = null;
+}
+
+function setHexType(i, typeId) {
+  if (i == null) return;
+  if (typeId) {
+    if (territoris[i]) territoris[i].tipus = typeId;
+    else territoris[i] = { tipus: typeId, nom: coordLabel(i), loc: ['', '', '', '', ''] };
+  } else {
+    delete territoris[i];
+  }
+  renderHex(i);
+  renderTerritoryPanel();
+  saveState();
+}
+
+// Build the "Territoris" panel from the filled hexes (linked to the map)
+function renderTerritoryPanel() {
+  const grid = document.getElementById('terrGrid');
+  grid.innerHTML = '';
+  const indices = Object.keys(territoris).map(Number).sort((a, b) => a - b);
+  if (indices.length === 0) {
+    grid.innerHTML = '<p class="instructions terr-empty">Assigna un tipus a un hex&agrave;gon del mapa i el seu territori apareixer&agrave; aqu&iacute;.</p>';
+    return;
+  }
+  const options = TERRITORIS.map(t => `<option value="${t.id}">${t.icon} ${t.nom}</option>`).join('');
+  indices.forEach(i => {
+    const data = territoris[i];
+    const card = document.createElement('div');
+    card.className = 'terr-card';
+    let locLines = '';
+    for (let j = 0; j < 5; j++) locLines += `<input type="text" class="terr-loc-input" data-loc="${j}">`;
+    card.innerHTML =
+      `<div class="terr-row"><span class="terr-coord">${coordLabel(i)}</span><input type="text" class="terr-nom-input"></div>` +
+      `<div class="terr-row"><label>Tipus</label><select class="terr-tipus-input">${options}</select></div>` +
+      `<div class="terr-row"><label>Loc.</label></div>` +
+      `<div class="terr-loc-lines">${locLines}</div>`;
+    grid.appendChild(card);
+
+    // Bind values + listeners to the linked territory
+    const nomEl = card.querySelector('.terr-nom-input');
+    nomEl.value = data.nom || '';
+    nomEl.addEventListener('input', () => { data.nom = nomEl.value; queueSave(); });
+
+    const tipusEl = card.querySelector('.terr-tipus-input');
+    tipusEl.value = data.tipus;
+    tipusEl.addEventListener('change', () => {
+      data.tipus = tipusEl.value;
+      renderHex(i);   // keep the hex icon in sync (two-way link)
+      saveState();
+    });
+
+    card.querySelectorAll('.terr-loc-input').forEach(locEl => {
+      const j = parseInt(locEl.dataset.loc);
+      locEl.value = data.loc[j] || '';
+      locEl.addEventListener('input', () => { data.loc[j] = locEl.value; queueSave(); });
+    });
+  });
+}
+
+function buildMap() {
+  buildHexMap();
+  buildLegend();
+  buildPicker();
+  renderTerritoryPanel();
+}
+
+// Close the picker when clicking anywhere else
+document.addEventListener('click', closePicker);
+
+/* ---- Card System ---- */
+const SUITS = [
+  { id: 'spades',   sym: '♠', color: 'black' },
+  { id: 'hearts',   sym: '♥', color: 'red' },
+  { id: 'diamonds', sym: '♦', color: 'red' },
+  { id: 'clubs',    sym: '♣', color: 'black' },
+];
+const RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+
+let deck = [];       // cards still in pile (array of card IDs)
+let drawnCards = [];  // { id, x, y, zIndex }
+let nextZ = 300;
+
+function buildFullDeck() {
+  const cards = [];
+  for (const suit of SUITS) {
+    for (const rank of RANKS) {
+      cards.push(suit.id + '-' + rank);
+    }
+  }
+  return cards;
+}
+
+function parseCardId(id) {
+  const [suitId, rank] = id.split('-');
+  const suit = SUITS.find(s => s.id === suitId);
+  return { suit, rank };
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function createCardElement(cardId, x, y) {
+  const { suit, rank } = parseCardId(cardId);
+  const el = document.createElement('div');
+  el.className = 'playing-card ' + suit.color;
+  el.dataset.cardId = cardId;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.zIndex = nextZ++;
+
+  el.innerHTML =
+    `<button class="card-return-btn" title="Tornar a la pila">&times;</button>` +
+    `<div class="card-simple">` +
+      `<span class="rank">${rank}</span>` +
+      `<span class="suit-sym">${suit.sym}</span>` +
+    `</div>`;
+
+  // Return button click
+  el.querySelector('.card-return-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    returnCard(cardId);
+  });
+
+  // Drag handling (coordinates relative to cardsPage)
+  let dragOffX, dragOffY, isDragging = false;
+
+  el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    isDragging = true;
+    el.classList.add('dragging');
+    el.style.zIndex = nextZ++;
+    el.setPointerCapture(e.pointerId);
+    const rect = el.getBoundingClientRect();
+    dragOffX = e.clientX - rect.left;
+    dragOffY = e.clientY - rect.top;
+  });
+
+  el.addEventListener('pointermove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const pageRect = document.getElementById('cardsPage').getBoundingClientRect();
+    const nx = e.clientX - dragOffX - pageRect.left;
+    const ny = e.clientY - dragOffY - pageRect.top;
+    el.style.left = nx + 'px';
+    el.style.top = ny + 'px';
+  });
+
+  const endDrag = e => {
+    if (!isDragging) return;
+    isDragging = false;
+    el.classList.remove('dragging');
+    // Update position in state
+    const dc = drawnCards.find(c => c.id === cardId);
+    if (dc) {
+      dc.x = parseFloat(el.style.left);
+      dc.y = parseFloat(el.style.top);
+      dc.zIndex = parseInt(el.style.zIndex);
+    }
+    saveState();
+  };
+  el.addEventListener('pointerup', endDrag);
+  el.addEventListener('pointercancel', endDrag);
+
+  // Double-click to return to deck
+  el.addEventListener('dblclick', e => {
+    e.preventDefault();
+    returnCard(cardId);
+  });
+
+  return el;
+}
+
+function updateDeckCount() {
+  const countEl = document.getElementById('deckCount');
+  const stackEl = document.getElementById('deckStack');
+  countEl.textContent = deck.length + (deck.length === 1 ? ' carta' : ' cartes');
+  if (deck.length === 0) stackEl.classList.add('empty');
+  else stackEl.classList.remove('empty');
+}
+
+function drawCard() {
+  if (deck.length === 0) return;
+
+  const cardId = deck.pop();
+
+  // Position near the deck zone (relative to cardsPage)
+  const deckEl = document.getElementById('deckStack');
+  const pageEl = document.getElementById('cardsPage');
+  const deckRect = deckEl.getBoundingClientRect();
+  const pageRect = pageEl.getBoundingClientRect();
+  const x = (deckRect.left - pageRect.left) + 90 + (drawnCards.length % 8) * 28;
+  const y = (deckRect.top - pageRect.top) - 10 + Math.floor(drawnCards.length / 8) * 30;
+
+  drawnCards.push({ id: cardId, x, y, zIndex: nextZ });
+
+  const cardEl = createCardElement(cardId, x, y);
+  document.getElementById('cardOverlay').appendChild(cardEl);
+
+  updateDeckCount();
+  saveState();
+}
+
+function returnCard(cardId) {
+  // Remove from drawn
+  const idx = drawnCards.findIndex(c => c.id === cardId);
+  if (idx === -1) return;
+  drawnCards.splice(idx, 1);
+
+  // Remove DOM element
+  const el = document.querySelector(`.playing-card[data-card-id="${cardId}"]`);
+  if (el) {
+    el.style.transition = 'transform .2s, opacity .2s';
+    el.style.transform = 'scale(0.3)';
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 220);
+  }
+
+  // Return to deck
+  deck.push(cardId);
+  updateDeckCount();
+  saveState();
+}
+
+function returnAllCards() {
+  if (drawnCards.length === 0) return;
+  // Animate all cards out
+  document.querySelectorAll('.playing-card').forEach(el => {
+    el.style.transition = 'transform .25s, opacity .25s';
+    el.style.transform = 'scale(0.3)';
+    el.style.opacity = '0';
+  });
+  setTimeout(() => {
+    document.getElementById('cardOverlay').innerHTML = '';
+  }, 280);
+
+  // Return all to deck
+  for (const dc of drawnCards) {
+    deck.push(dc.id);
+  }
+  drawnCards = [];
+  updateDeckCount();
+  saveState();
+}
+
+function shuffleDeck() {
+  shuffleArray(deck);
+  // Visual feedback
+  const stackEl = document.getElementById('deckStack');
+  stackEl.style.transition = 'transform .15s';
+  stackEl.style.transform = 'rotate(5deg)';
+  setTimeout(() => { stackEl.style.transform = 'rotate(-5deg)'; }, 150);
+  setTimeout(() => { stackEl.style.transform = ''; }, 300);
+  saveState();
+}
+
+function restoreDrawnCards() {
+  const overlay = document.getElementById('cardOverlay');
+  overlay.innerHTML = '';
+  for (const dc of drawnCards) {
+    const el = createCardElement(dc.id, dc.x, dc.y);
+    if (dc.zIndex) el.style.zIndex = dc.zIndex;
+    overlay.appendChild(el);
+  }
+  if (drawnCards.length > 0) {
+    nextZ = Math.max(nextZ, ...drawnCards.map(c => c.zIndex || 300)) + 1;
+  }
+}
+
+function initCards() {
+  // If no saved state, build and shuffle a fresh deck
+  if (deck.length === 0 && drawnCards.length === 0) {
+    deck = shuffleArray(buildFullDeck());
+  }
+  updateDeckCount();
+  restoreDrawnCards();
+}
+
+/* ---- Dice Roller ---- */
+function toggleDicePanel() {
+  document.getElementById('dicePanel').classList.toggle('open');
+}
+
+// Pip patterns for faces 1-6 (3x3 grid, 1=pip, 0=empty)
+const PIP_PATTERNS = {
+  1: [0,0,0, 0,1,0, 0,0,0],
+  2: [0,0,1, 0,0,0, 1,0,0],
+  3: [0,0,1, 0,1,0, 1,0,0],
+  4: [1,0,1, 0,0,0, 1,0,1],
+  5: [1,0,1, 0,1,0, 1,0,1],
+  6: [1,0,1, 1,0,1, 1,0,1],
+};
+
+function buildFaceHTML(n) {
+  const pips = PIP_PATTERNS[n];
+  return '<div class="pips">' +
+    pips.map(p => `<span class="pip${p ? '' : ' empty'}"></span>`).join('') +
+    '</div>';
+}
+
+function buildDie(el) {
+  el.innerHTML = '';
+  for (let f = 1; f <= 6; f++) {
+    const face = document.createElement('div');
+    face.className = `dice-face f${f}`;
+    face.innerHTML = buildFaceHTML(f);
+    el.appendChild(face);
+  }
+}
+
+// Rotation needed to show face N at the front
+const FACE_ROTATIONS = {
+  1: 'rotateX(0deg)    rotateY(0deg)',
+  2: 'rotateX(0deg)    rotateY(180deg)',
+  3: 'rotateX(0deg)    rotateY(90deg)',
+  4: 'rotateX(0deg)    rotateY(-90deg)',
+  5: 'rotateX(-90deg)  rotateY(0deg)',
+  6: 'rotateX(90deg)   rotateY(0deg)',
+};
+
+let diceReady = true;
+
+function rollDice() {
+  if (!diceReady) return;
+  diceReady = false;
+
+  const die1 = document.getElementById('die1');
+  const die2 = document.getElementById('die2');
+  const result = document.getElementById('diceResult');
+
+  // Random results
+  const r1 = Math.floor(Math.random() * 6) + 1;
+  const r2 = Math.floor(Math.random() * 6) + 1;
+  const total = r1 + r2;
+
+  // Add extra full spins so the animation looks dramatic
+  const spinsX = 720; // 2 full extra rotations
+
+  // Set final rotation as CSS custom property for the animation end
+  const rot1 = FACE_ROTATIONS[r1];
+  const rot2 = FACE_ROTATIONS[r2];
+
+  // Parse base rotations
+  function addSpins(rotStr) {
+    return rotStr.replace(/([-\d]+)deg/g, (m, val) => {
+      return (parseInt(val) + spinsX) + 'deg';
+    });
+  }
+
+  die1.style.setProperty('--final-rotation', addSpins(rot1));
+  die2.style.setProperty('--final-rotation', addSpins(rot2));
+
+  // Remove old class, force reflow, add class
+  die1.classList.remove('rolling');
+  die2.classList.remove('rolling');
+  void die1.offsetWidth;
+
+  die1.classList.add('rolling');
+  die2.classList.add('rolling');
+
+  result.innerHTML = '<span style="color:#666;font-size:14px;">...</span>';
+
+  setTimeout(() => {
+    // Set final transform directly so it sticks
+    die1.style.transform = addSpins(rot1);
+    die2.style.transform = addSpins(rot2);
+    die1.classList.remove('rolling');
+    die2.classList.remove('rolling');
+
+    result.innerHTML =
+      `<span class="total">${total}</span>` +
+      `<span class="breakdown">(${r1} + ${r2})</span>`;
+    diceReady = true;
+  }, 850);
+}
+
+// Build dice faces on init
+function initDice() {
+  buildDie(document.getElementById('die1'));
+  buildDie(document.getElementById('die2'));
+}
+
+/* ---- Boot ---- */
+document.addEventListener('DOMContentLoaded', () => { init(); initCards(); initDice(); });
+</script>
+</body>
+</html>
