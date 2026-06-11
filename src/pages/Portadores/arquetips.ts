@@ -15,6 +15,8 @@ export interface Arquetip {
   descripcio?: string;
   /** Maximum carried objects, when the archetype specifies one. */
   objectesMax?: number;
+  /** Available equipment slots, split by category. */
+  equip: { armes: number; armadura: number; objectes: number };
   moviments: Moviment[];
   /** Whether the archetype has a selectable spell list. */
   teEncanteris?: boolean;
@@ -23,6 +25,9 @@ export interface Arquetip {
 export const GUARDIA: Arquetip = {
   id: 'guardia',
   nom: "Guardià de l'esperança",
+  descripcio:
+    'Ets un personatge destre en les armes, amb un lideratge impertérrit i una gran promesa de defensar els més dèbils. Domines les armes de cos a cos com espases i llances o bé les de distància, com arcs o fones.',
+  equip: { armes: 2, armadura: 1, objectes: 7 },
   moviments: [
     { name: 'Atac poderós', text: 'una vegada al dia pots repetir una tirada de combat.' },
     {
@@ -54,6 +59,7 @@ export const PASTORA: Arquetip = {
   descripcio:
     'De manera natural sempre has notat una connexió estranya amb una força desconeguda que ho rodeja tot. Amb el temps has après a manipular-ho en el teu benefici i has descobert que hi ha gent que porta generacions estudiant-ho: és la màgia.',
   objectesMax: 8,
+  equip: { armes: 2, armadura: 0, objectes: 6 },
   teEncanteris: true,
   moviments: [
     { name: 'Tirar encanteri', text: 'permet tirar un encanteri al dia.', inicial: true },

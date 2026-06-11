@@ -73,7 +73,16 @@ function CharacterSheet() {
       <div className={styles.threeCol}>
         <div className={styles.colSection}>
           <h2>Equip</h2>
-          <Lines prefix="equip" count={10} />
+          <h3 className={styles.subhead}>Armes</h3>
+          <Lines prefix="equip_armes" count={arquetip.equip.armes} />
+          {arquetip.equip.armadura > 0 && (
+            <>
+              <h3 className={styles.subhead}>Armadura</h3>
+              <Lines prefix="equip_armadura" count={arquetip.equip.armadura} />
+            </>
+          )}
+          <h3 className={styles.subhead}>Objectes</h3>
+          <Lines prefix="equip_objectes" count={arquetip.equip.objectes} />
         </div>
         <div className={styles.colSection}>
           <h2>Fragments</h2>
@@ -139,7 +148,7 @@ export default function PortadoresPage({ variant = 'tot' }: { variant?: 'tot' | 
         {!pjOnly && (
           <>
             {/* ===== Page 2: cards ===== */}
-            <CardTable />
+            <CardTable orientation="landscape" />
             {/* ===== Page 3: map ===== */}
             <PortadoresMap />
           </>
