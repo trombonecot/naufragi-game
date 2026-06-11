@@ -1,0 +1,109 @@
+:root {
+  --ink: #1a1a1a;
+  --bg: #fff;
+  --line: #999;
+  --accent: #444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'EB Garamond', 'Georgia', serif;
+  color: var(--ink);
+  background: #e8e4df;
+  min-height: 100vh;
+}
+
+/* --- Base inputs (shared by every sheet) --- */
+input[type='text'],
+textarea {
+  font-family: 'EB Garamond', 'Georgia', serif;
+  font-size: 11pt;
+  color: var(--ink);
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  outline: none;
+  padding: 1px 4px;
+  transition: border-color 0.2s;
+}
+input[type='text']:focus,
+textarea:focus {
+  border-bottom-color: var(--ink);
+}
+textarea {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  resize: vertical;
+  padding: 6px 8px;
+}
+textarea:focus {
+  border-color: var(--ink);
+}
+input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--ink);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* --- Sheet layout: centers the stacked A4 pages below the fixed controls bar --- */
+.sheet-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  gap: 24px;
+}
+.sheet-layout > .page:first-of-type {
+  margin-top: 48px;
+}
+
+/* --- A4 page sheet --- */
+.page {
+  background: var(--bg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  page-break-after: always;
+}
+
+/* --- Print --- */
+@media print {
+  body {
+    background: #fff;
+  }
+  .page {
+    box-shadow: none;
+    margin: 0 !important;
+  }
+  .sheet-layout {
+    padding: 0;
+    gap: 0;
+  }
+  .sheet-layout > .page:first-of-type {
+    margin-top: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+
+  /* Mixed page orientations: portrait by default, landscape where marked. */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  .landscape {
+    page: landscapePage;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+  @page landscapePage {
+    size: A4 landscape;
+    margin: 0;
+  }
+}

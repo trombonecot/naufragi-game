@@ -1,0 +1,202 @@
+/* Landscape A4 map page. */
+.mapPage {
+  width: 297mm;
+  min-height: 210mm;
+  padding: 12mm 14mm;
+}
+
+.mapLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) 1fr;
+  gap: 28px;
+  height: 100%;
+}
+.mapCol {
+  display: flex;
+  flex-direction: column;
+}
+.terrCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.mapTitle {
+  font-size: 19pt;
+  font-weight: 400;
+  font-style: italic;
+  text-align: left;
+  margin: 0 0 8px;
+}
+.instructions {
+  font-size: 9.5pt;
+  font-style: italic;
+  color: #444;
+  line-height: 1.35;
+}
+
+.hexMapWrap {
+  background: #efece7;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+}
+.hexMap {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: manipulation;
+}
+.hexCell {
+  cursor: pointer;
+}
+.hex {
+  fill: #fff;
+  stroke: #999;
+  stroke-width: 1.4;
+  transition: fill 0.12s;
+}
+.hexCell:hover .hex {
+  fill: #f3ead4;
+}
+.hex.filled {
+  fill: #faf6ec;
+}
+.hexIcon {
+  font-size: 22px;
+  dominant-baseline: central;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hexLegend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px 14px;
+  margin-top: 10px;
+  font-size: 8.5pt;
+  color: #555;
+}
+.leg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ic {
+  font-size: 13px;
+  width: 18px;
+  text-align: center;
+}
+.leg .card {
+  color: #aaa;
+  margin-left: auto;
+  font-family: 'Georgia', serif;
+}
+
+/* Territory picker popover */
+.terrPicker {
+  position: absolute;
+  z-index: 400;
+  background: #1e1e1e;
+  color: #eee;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-family: system-ui, sans-serif;
+  width: 290px;
+}
+.terrPicker button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #2c2c2c;
+  border: 1px solid #3a3a3a;
+  color: #ddd;
+  border-radius: 5px;
+  padding: 5px 7px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 12px;
+  font-family: system-ui, sans-serif;
+}
+.terrPicker button:hover {
+  background: #3a3a3a;
+}
+.terrPicker button .ic {
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+}
+.terrPicker button.clear {
+  grid-column: 1 / -1;
+  justify-content: center;
+  color: #e88;
+}
+
+/* Territory cards */
+.terrGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 20px;
+}
+.terrCard {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.terrRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.terrRow label {
+  font-size: 10pt;
+  font-style: italic;
+  min-width: 32px;
+}
+.terrRow input[type='text'] {
+  flex: 1;
+}
+.terrCoord {
+  font-family: 'Georgia', serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #fff;
+  background: #2c2c2c;
+  border-radius: 4px;
+  padding: 1px 7px;
+  min-width: 30px;
+  text-align: center;
+}
+.terrEmpty {
+  grid-column: 1 / -1;
+}
+.terrCard select {
+  flex: 1;
+  font-family: 'EB Garamond', 'Georgia', serif;
+  font-size: 10.5pt;
+  color: var(--ink);
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  outline: none;
+  padding: 1px 2px;
+  cursor: pointer;
+}
+.terrCard select:focus {
+  border-bottom-color: var(--ink);
+}
+.terrLocLines {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 2px;
+}
+.terrLocLines input[type='text'] {
+  width: 100%;
+  font-size: 10pt;
+}

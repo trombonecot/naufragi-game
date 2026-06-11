@@ -1,0 +1,170 @@
+/* Naufragi sheet pages are landscape A4. */
+.sheetPage {
+  width: 297mm;
+  min-height: 210mm;
+  padding: 14mm 16mm;
+}
+
+.sheetPage h2 {
+  font-size: 16pt;
+  font-weight: 600;
+  margin: 14px 0 4px;
+}
+.sheetPage h3 {
+  font-size: 13pt;
+  font-weight: 600;
+  margin: 10px 0 2px;
+}
+
+.title {
+  font-size: 36pt;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.subtitle {
+  font-size: 11pt;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+.instructions {
+  font-size: 9.5pt;
+  font-style: italic;
+  color: #444;
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+/* Page 1 */
+.p1Grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+  height: 100%;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.fieldRow label {
+  font-size: 11pt;
+  white-space: nowrap;
+  min-width: 70px;
+}
+.fieldRow input[type='text'] {
+  flex: 1;
+}
+
+.equipGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 18px;
+  margin-top: 6px;
+}
+.equipItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.equipItem input[type='text'] {
+  flex: 1;
+}
+
+.condicionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 18px;
+  margin-top: 4px;
+}
+
+.diaryHeader {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  font-size: 11pt;
+  margin-bottom: 4px;
+  padding: 0 4px;
+}
+.diaryRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.diaryRow .record {
+  flex: 2.4;
+}
+.diaryRow .habilitat {
+  flex: 1;
+}
+
+/* Page 2 */
+.p2Grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px 20px;
+  height: 100%;
+}
+.p2Illa {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+.p2Loc {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.p2Esdev {
+  grid-column: 3;
+  grid-row: 1 / 2;
+}
+.p2Aliat {
+  grid-column: 2;
+  grid-row: 3;
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
+.p2Sortir {
+  grid-column: 3;
+  grid-row: 2 / 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.sortirBox {
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
+
+.locRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+.locNum {
+  font-size: 10pt;
+  min-width: 20px;
+  text-align: right;
+}
+
+.esdevRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+.esdevLabel {
+  font-size: 10pt;
+  min-width: 62px;
+}
+.esdevRow input[type='text'] {
+  flex: 1;
+}

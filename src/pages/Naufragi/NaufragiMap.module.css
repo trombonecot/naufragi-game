@@ -1,0 +1,50 @@
+.mapArea {
+  width: 100%;
+  height: 140mm;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+}
+.mapArea canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.mapControls {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  font-family: system-ui, sans-serif;
+  font-size: 11px;
+  align-items: center;
+}
+.mapControls button {
+  font-family: system-ui, sans-serif;
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  background: #f0f0f0;
+  cursor: pointer;
+}
+.mapControls button:hover {
+  background: #ddd;
+}
+.colorPick {
+  width: 28px;
+  height: 22px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 0;
+  cursor: pointer;
+}
+.mapControls label {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
