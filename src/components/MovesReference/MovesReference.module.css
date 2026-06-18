@@ -1,0 +1,290 @@
+/* Floating reference button — sits to the left of the dice FAB. */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 92px;
+  z-index: 200;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2c2c2c;
+  color: #fff;
+  border: 2px solid #555;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, background 0.15s;
+  user-select: none;
+}
+.fab:hover {
+  transform: scale(1.1);
+  background: #444;
+}
+
+/* ---- Modal ---- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(20, 18, 15, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal {
+  width: min(960px, 100%);
+  height: min(88vh, 820px);
+  background: #faf8f4;
+  color: var(--ink);
+  border-radius: 12px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'EB Garamond', 'Georgia', serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 2px solid var(--ink);
+  background: #f4f1ea;
+  flex-shrink: 0;
+}
+.header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+.close {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0 6px;
+}
+.close:hover {
+  color: var(--ink);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---- Left nav ---- */
+.nav {
+  width: 230px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  background: #f4f1ea;
+  padding: 8px 0;
+}
+.navGroup {
+  margin-top: 6px;
+}
+.navGroupLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #9a8f80;
+  padding: 6px 16px 2px;
+  font-weight: 600;
+}
+.navItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 5px 16px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+.navItem:hover {
+  background: #ece7dd;
+}
+.navItem.active {
+  background: #e7e0d3;
+  border-left-color: var(--ink);
+  font-weight: 600;
+}
+.legendItem {
+  font-style: italic;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+
+/* ---- Right detail ---- */
+.detail {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 26px 32px;
+  min-width: 0;
+}
+.back {
+  display: none; /* mobile only */
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0 0 10px;
+}
+.detailTitle {
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+.when {
+  font-style: italic;
+  color: var(--soft, #6b6258);
+  margin-bottom: 12px;
+  font-size: 14.5px;
+}
+
+.para {
+  margin: 8px 0;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+.note {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #6b6258;
+  border-left: 3px solid var(--line);
+  padding-left: 10px;
+  font-style: italic;
+}
+.subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 12px 0 4px;
+  color: #33302b;
+}
+.list {
+  margin: 6px 0 6px 22px;
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+.list li {
+  margin: 3px 0;
+}
+
+/* roll results */
+.results {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.result {
+  border-left: 4px solid var(--line);
+  padding: 5px 10px;
+  border-radius: 0 4px 4px 0;
+  background: #f1ede5;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.resultLabel {
+  font-weight: 700;
+  margin-right: 6px;
+}
+.result.total {
+  border-left-color: #2c6e3f;
+  background: #eef5ef;
+}
+.result.total .resultLabel {
+  color: #2c6e3f;
+}
+.result.partial {
+  border-left-color: #9a7a1e;
+  background: #f7f2e6;
+}
+.result.partial .resultLabel {
+  color: #9a7a1e;
+}
+.result.fail {
+  border-left-color: #8a2b2b;
+  background: #f7ecec;
+}
+.result.fail .resultLabel {
+  color: #8a2b2b;
+}
+
+/* tables */
+.tableScroll {
+  overflow-x: auto;
+  margin: 10px 0;
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.tableScroll .table {
+  margin: 0;
+  min-width: 460px;
+}
+.table th,
+.table td {
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+.table th {
+  background: #ece7dd;
+  font-weight: 600;
+}
+.keyTable {
+  max-width: 520px;
+}
+.keyCell {
+  width: 38px;
+  text-align: center;
+  font-weight: 700;
+  background: #f4f1ea;
+}
+
+/* ---- Responsive: master-detail collapses on narrow screens ---- */
+@media (max-width: 680px) {
+  .fab {
+    right: 88px;
+  }
+  .nav {
+    width: 100%;
+    border-right: none;
+  }
+  .detail {
+    display: none;
+  }
+  .back {
+    display: block;
+  }
+  /* when a move is picked, swap to the detail pane */
+  .bodyDetail .nav {
+    display: none;
+  }
+  .bodyDetail .detail {
+    display: block;
+  }
+}

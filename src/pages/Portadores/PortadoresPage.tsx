@@ -1,5 +1,6 @@
 import ControlsBar from '../../components/ControlsBar/ControlsBar';
 import DiceRoller from '../../components/DiceRoller/DiceRoller';
+import MovesReference from '../../components/MovesReference/MovesReference';
 import CardTable from '../../components/cards/CardTable';
 import { CheckField, TextField } from '../../components/fields/Fields';
 import { SheetProvider, useSheet } from '../../context/SheetContext';
@@ -156,6 +157,7 @@ export default function PortadoresPage({ variant = 'tot' }: { variant?: 'tot' | 
       </div>
 
       <DiceRoller />
+      {!pjOnly && <MovesReference />}
     </SheetProvider>
   );
 }
