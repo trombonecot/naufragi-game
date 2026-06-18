@@ -90,7 +90,25 @@ export const PASTORA: Arquetip = {
   ],
 };
 
-export const ARQUETIPS: Arquetip[] = [GUARDIA, PASTORA];
+export const CARTOGRAF: Arquetip = {
+  id: 'cartograf',
+  nom: 'Cartògraf de les terres interiors',
+  descripcio:
+    "La teva passió sempre ha anat lligada a l'exploració de llocs llunyans i l'aventura. Potser t'has dedicat a dibuixar mapes dels camins més amagats, o a catalogar els animals més estrafolaris, o potser t'agrada establir contacte amb els assentaments més remots.",
+  equip: { armes: 2, armadura: 1, objectes: 7 },
+  moviments: [
+    {
+      name: 'Explorador expert',
+      text: 'al fer el moviment de viatjar pots treure dues cartes i quedar-te amb la que més t\'agradi.',
+    },
+    {
+      name: 'Supervivent',
+      text: "en un moviment on se't digui que has de perdre un objecte, pots perdre una carta de recursos enlloc de l'objecte. Aquesta carta passa a la pila d'aventura i es torna a barrejar.",
+    },
+  ],
+};
+
+export const ARQUETIPS: Arquetip[] = [GUARDIA, PASTORA, CARTOGRAF];
 
 export const ARQUETIP_BY_ID: Record<string, Arquetip> = Object.fromEntries(
   ARQUETIPS.map((a) => [a.id, a]),
