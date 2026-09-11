@@ -514,4 +514,105 @@ export const moveGroups: MoveGroup[] = [
       },
     ],
   },
+  {
+    id: 'arquetip',
+    label: 'Moviments d’arquetip',
+    moves: [
+      {
+        id: 'tirar-encanteri',
+        title: 'Tirar encanteri',
+        when: 'Quan vulguis tirar un encanteri. (Pastora d’energia.)',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Els encanteris tenen un **cost**: quan més poderós és, més costa. Aquest cost es paga amb cartes de recursos. Per tirar un encanteri s’ha de gastar una carta de recursos de com a mínim el cost de l’encanteri. **Les figures valen 10 punts.**',
+          },
+          {
+            type: 'p',
+            text: 'Els encanteris es poden **preparar**: fer la tirada en qualsevol moment i llençar-los, guanyant l’efecte, en qualsevol moment posterior. Cada encanteri només dóna l’efecte una vegada.',
+          },
+          {
+            type: 'results',
+            results: [
+              {
+                kind: 'total',
+                label: 'Èxit total',
+                text: 'L’encanteri funciona i la carta gastada torna a recursos. Explica què ha passat.',
+              },
+              {
+                kind: 'partial',
+                label: 'Èxit parcial',
+                text: 'L’encanteri funciona a canvi que la carta gastada passi a destí. Pots decidir que no funcioni i llavors la carta passa a aventura. Explica què ha passat.',
+              },
+              {
+                kind: 'fail',
+                label: 'Fracàs',
+                text: 'L’encanteri no funciona, la carta passa a destí i guanyes una condició.',
+              },
+            ],
+          },
+          { type: 'subtitle', text: 'Alguns encanteris' },
+          {
+            type: 'table',
+            head: ['Encanteri', 'Cost', 'Efecte'],
+            rows: [
+              ['Armadura màgica', '5', 'Permet absorbir totes les condicions d’un atac.'],
+              [
+                'Refugi',
+                '5',
+                'Durant la nit es recupera una condició adicional i si al despertar es treu una carta de figura no cal manipular el destí.',
+              ],
+              ['Guia', '6', 'Permet fer el moviment de viatjar sense manipular el destí.'],
+              ['Arma màgica', '6', '+1 a tots els moviments de combatre durant un combat.'],
+              ['Curar', '6', 'Permet treure fins a dues condicions.'],
+              ['Encantar persona', '7', 'Pots tirar parlamentar amb avantatge.'],
+              ['Reparar', '7', 'Permet reparar qualsevol objecte, arma o armadura desgastada.'],
+              ['Oracle', '8', 'Robar una carta de destí i la tornes a la pila d’aventura.'],
+              [
+                'Bola de foc',
+                '8',
+                'Tira el moviment de combatre; si tens èxit fas tantes marques com el resultat més baix.',
+              ],
+              ['Dominar destí', '9', 'Roba una carta de destí i passa-la a recursos.'],
+              [
+                'Raig electrificant',
+                '10',
+                'Tira el moviment de combatre; si tens èxit fas tantes marques com el resultat més alt.',
+              ],
+            ],
+            scroll: true,
+          },
+        ],
+      },
+      {
+        id: 'demanar-favor',
+        title: 'Demanar favor als Déus',
+        when: 'Quan vulguis tirar un favor diví. (Sacerdotessa de la llum.)',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Per activar un favor diví necessites **temps i un espai tranquil** on poder meditar, resar i connectar amb els Déus. El procés triga força estona i durant aquesta estona has d’estar fora de cap perill o interrupció.',
+          },
+          {
+            type: 'p',
+            text: 'Fes una **tirada de 2d6**: aquest és el cost i sacrifici que demanen els Déus perquè el favor sigui concedit. Per pagar-lo has de gastar una carta de recursos (les figures valen 10); si el seu valor no arriba al cost de la tirada, hauràs de treure una carta d’aventura i posar-la a la pila de destí.',
+          },
+          {
+            type: 'note',
+            text: 'Si després de veure el cost decideixes que no vols pagar-lo, pots fer-ho, però a canvi reps una condició.',
+          },
+          { type: 'subtitle', text: 'Després de pagar el cost, tria el favor' },
+          {
+            type: 'list',
+            items: [
+              '**Sanació**: permet curar totes les condicions temporals teves o d’un aliat, o bé una condició permanent.',
+              '**Expulsar criatures de la foscor**: obtens avantatge al combatre contra criatures de la foscor durant el següent dia.',
+              '**Guia**: permet agafar tres cartes de la pila d’aventura i escollir-ne una que passa a recursos; la resta tornen a aventura i es barreja.',
+              '**Inspirar**: tu i cada aliat teniu un +1 a la següent tirada que escolliu.',
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
