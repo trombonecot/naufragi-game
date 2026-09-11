@@ -62,14 +62,18 @@ export const PASTORA: Arquetip = {
   equip: { armes: 2, armadura: 0, objectes: 6 },
   teEncanteris: true,
   moviments: [
-    { name: 'Tirar encanteri', text: 'permet tirar un encanteri al dia.', inicial: true },
+    {
+      name: 'Tirar encanteri',
+      text: 'permet tirar un encanteri al dia (descrit a continuació).',
+      inicial: true,
+    },
     {
       name: 'Aprenent de màgia',
-      text: "en la posta pots fer servir la combinació de pòquer per guanyar un encanteri nou enlloc d'un punt d'experiència. Aquest nou encanteri només pot ser un nivell per sobre dels ja coneguts.",
+      text: 'en el moviment treure conclusions pots fer servir la combinació de trio per guanyar un encanteri nou. Aquest nou encanteri només pot ser un nivell per sobre dels ja coneguts.',
     },
     {
       name: 'Oracle',
-      text: "permet, durant la fase de posta, gastar dues cartes aleatòries de recursos per tornar una carta de la pila de destí a la pila d'aventura.",
+      text: "permet gastar dues cartes aleatòries de recursos per tornar una carta de la pila de destí a la pila d'aventura.",
     },
     {
       name: 'Coneixements prohibits',
