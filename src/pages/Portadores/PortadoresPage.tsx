@@ -6,6 +6,7 @@ import { CheckField, TextField } from '../../components/fields/Fields';
 import { SheetProvider, useSheet } from '../../context/SheetContext';
 import { ARQUETIP_BY_ID, ARQUETIPS, DEFAULT_ARQUETIP } from './arquetips';
 import { ENCANTERIS } from './encanteris';
+import PortadoresCombats from './PortadoresCombats';
 import PortadoresMap from './PortadoresMap';
 import styles from './PortadoresPage.module.css';
 
@@ -152,6 +153,8 @@ export default function PortadoresPage({ variant = 'tot' }: { variant?: 'tot' | 
             <CardTable orientation="landscape" />
             {/* ===== Page 3: map ===== */}
             <PortadoresMap />
+            {/* ===== Page 4: combats ===== */}
+            <PortadoresCombats />
           </>
         )}
       </div>
