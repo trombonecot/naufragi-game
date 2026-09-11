@@ -13,14 +13,14 @@ export const TERRITORIS: TerritoryType[] = [
   { id: 'camp', nom: 'Camp', icon: '🌾', carta: '3' },
   { id: 'bosc', nom: 'Bosc', icon: '🌲', carta: '4' },
   { id: 'aiguamolls', nom: 'Aiguamolls', icon: '🪷', carta: '5' },
-  { id: 'desert', nom: 'Àrid / Desert', icon: '🏜️', carta: '6' },
+  { id: 'desert', nom: 'Àrid', icon: '🏜️', carta: '6' },
   { id: 'muntanyes', nom: 'Muntanyes', icon: '⛰️', carta: '7' },
-  { id: 'costa', nom: 'Costa', icon: '🏖️', carta: '8' },
-  { id: 'jungla', nom: 'Jungla', icon: '🌴', carta: '9' },
-  { id: 'ruines', nom: 'Ruïnes', icon: '🏛️', carta: '10' },
-  { id: 'fosca', nom: 'Terra fosca', icon: '🌑', carta: 'J' },
+  { id: 'aigua', nom: 'Aigua', icon: '🌊', carta: '8' },
+  { id: 'gel', nom: 'Camps de gel', icon: '❄️', carta: '9' },
+  { id: 'tarter', nom: 'Tarter', icon: '🪨', carta: '10' },
+  { id: 'ruines', nom: 'Ruïnes', icon: '🏛️', carta: 'J' },
   { id: 'cremada', nom: 'Terra cremada', icon: '🔥', carta: 'Q' },
-  { id: 'corrupte', nom: 'Terra corrupte', icon: '☠️', carta: 'K' },
+  { id: 'fosca', nom: 'Terra fosca', icon: '🌑', carta: 'K' },
 ];
 
 export const TERR_BY_ID: Record<string, TerritoryType> = Object.fromEntries(
