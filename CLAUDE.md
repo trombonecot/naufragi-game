@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-Routing (`src/App.tsx`, `react-router-dom`): `/` → `Home`, `/naufragi` → `NaufragiPage`, `/portadores` → `PortadoresPage`. The Home menu only links Naufragi; Portadores de llum is shown disabled ("Properament"), though its routes still work by URL.
+Routing (`src/App.tsx`, `react-router-dom`): `/` → `Home`, `/naufragi` → `NaufragiPage`, `/portadores` → `PortadoresPage`. The Home menu only links Naufragi; Portadores de llum is shown disabled ("En desenvolupament"), though its routes still work by URL.
 
 ### Persistence — the central pattern (`src/context/SheetContext.tsx`)
 

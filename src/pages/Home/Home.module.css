@@ -1,4 +1,5 @@
 .home {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -190,4 +191,41 @@ a.entry:focus-visible {
   .shopTitle {
     font-size: 1.45rem;
   }
+}
+
+/* --- Publisher logos: small, discreet, top-right corner --- */
+.publishedBy {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.publishers {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.publisher {
+  display: block;
+  border-radius: 50%;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  transition: opacity 0.15s, transform 0.15s;
+}
+.publisher:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+.publisher:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+.publisher img {
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(239, 230, 210, 0.35);
+  width: 36px;
+  height: 36px;
 }
