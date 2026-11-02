@@ -1,0 +1,72 @@
+/* Shared native-<dialog> modal on a paper card. */
+.dialog {
+  margin: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  max-width: min(460px, calc(100vw - 32px));
+  width: 100%;
+  color: var(--ink);
+}
+.dialog::backdrop {
+  background: rgba(8, 12, 14, 0.6);
+  backdrop-filter: blur(3px);
+}
+.dialog[open] {
+  animation: pop 0.18s ease-out;
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+.dialogInner {
+  background: var(--paper-texture) var(--paper);
+  border-radius: 6px;
+  padding: 22px 24px 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(60, 45, 20, 0.25);
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.2);
+}
+.dialogHeader h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.7rem;
+}
+.closeBtn {
+  display: inline-flex;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+.dialog.wide {
+  max-width: min(580px, calc(100vw - 24px));
+}
+.dialog {
+  max-height: calc(100vh - 24px);
+}
+.dialogInner {
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+}

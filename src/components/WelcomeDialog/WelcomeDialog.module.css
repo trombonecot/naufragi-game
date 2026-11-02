@@ -1,0 +1,80 @@
+.lead {
+  font-size: 1.1rem;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.tips {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.tips li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+.glyph {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 50%;
+  color: var(--parchment);
+  background: var(--sea-dark);
+  box-shadow: 0 0 0 1px var(--brass);
+}
+
+.notice {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--brass);
+  background: rgba(201, 164, 92, 0.13);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #3d3428;
+}
+.notice h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+.notice p + p {
+  margin-top: 6px;
+}
+.notice code {
+  font-size: 0.9em;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.cta {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.35rem;
+  padding: 8px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--brass);
+  background: var(--sea-dark);
+  color: var(--parchment);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: background 0.15s, transform 0.15s;
+}
+.cta:hover {
+  background: #26343a;
+  transform: translateY(-1px);
+}
+.cta:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}

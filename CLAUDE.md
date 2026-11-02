@@ -34,7 +34,10 @@ Components read/write through the `useSheet()` hook rather than touching the DOM
 
 ### Shared components (`src/components/`)
 
-- `ControlsBar` — fixed top bar (save / export / import / print / clear + save flash). Pulls all actions from `useSheet()`.
+- `ControlsBar` — fixed top bar (save / export / import / print / clear + save flash, and an optional `onHelp` “!” button). Pulls all actions from `useSheet()`.
+- `Modal` — native `<dialog>` wrapper shared by the save/load dialogs and `WelcomeDialog`.
+- `WelcomeDialog` — how-to-play + storage disclaimer for Naufragi; opens automatically on first visit (flag `naufragi_benvinguda_vista` in localStorage) and from the bar's “!” button.
+- `Credits` — faint footer crediting the background painting (rendered once in `App.tsx`).
 - `DiceRoller` — floating FAB + 2d6 CSS-3D dice panel; self-contained, no persistence.
 - `cards/CardTable` + `cards/PlayingCard` — the 52-card adventure deck (faces use the rulebook suit glyphs via `cards/SuitIcon`; the back masks `public/img/palmera-carta.png` in brass). Cards are drawn onto an absolutely-positioned overlay and dragged with pointer events (position stored in `drawnCards`). `<CardTable orientation="landscape" />` for landscape sheets (Naufragi), default portrait (Portadores). Card logic/types live in `src/lib/cards.ts`.
 

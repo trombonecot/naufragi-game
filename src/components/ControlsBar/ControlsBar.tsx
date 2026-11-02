@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useSheet } from '../../context/SheetContext';
+import Modal from '../Modal/Modal';
 import styles from './ControlsBar.module.css';
 
 /* ---------- Icons (inline, stroke-based) ---------- */
@@ -59,6 +60,13 @@ const IconPrint = () => (
     <path d="M7 14h10v7H7z" />
   </Icon>
 );
+const IconHelp = () => (
+  <Icon>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v6" />
+    <path d="M12 16.5h.01" strokeWidth="2.4" />
+  </Icon>
+);
 const IconTrash = () => (
   <Icon>
     <path d="M4 7h16" />
@@ -66,59 +74,6 @@ const IconTrash = () => (
     <path d="M6 7l1 13h10l1-13" />
   </Icon>
 );
-const IconClose = () => (
-  <Icon>
-    <path d="M6 6l12 12M18 6L6 18" />
-  </Icon>
-);
-
-/* ---------- Modal dialog wrapper (native <dialog>) ---------- */
-function Modal({
-  open,
-  onClose,
-  title,
-  children,
-}: {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  children: ReactNode;
-}) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    if (open && !d.open) d.showModal();
-    if (!open && d.open) d.close();
-  }, [open]);
-
-  return (
-    <dialog
-      ref={ref}
-      className={`${styles.dialog} no-print`}
-      // Escape: let React state drive closing (the native async `close` event
-      // would otherwise race with opening another dialog right after).
-      onCancel={(e) => {
-        e.preventDefault();
-        onClose();
-      }}
-      onClick={(e) => {
-        // Click on the backdrop closes the dialog.
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div className={styles.dialogInner}>
-        <header className={styles.dialogHeader}>
-          <h2>{title}</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Tancar">
-            <IconClose />
-          </button>
-        </header>
-        {children}
-      </div>
-    </dialog>
-  );
-}
 
 function formatDate(iso: string): string {
   try {
@@ -135,7 +90,7 @@ function formatDate(iso: string): string {
 }
 
 /* ---------- Controls bar ---------- */
-export default function ControlsBar({ title }: { title: string }) {
+export default function ControlsBar({ title, onHelp }: { title: string; onHelp?: () => void }) {
   const {
     exportJSON,
     importJSON,
@@ -213,6 +168,14 @@ export default function ControlsBar({ title }: { title: string }) {
               <span className={styles.label}>Esborrar</span>
             </button>
           </div>
+
+          {onHelp && (
+            <div className={styles.group}>
+              <button onClick={onHelp} title="Com funciona la fitxa" aria-label="Com funciona la fitxa">
+                <IconHelp />
+              </button>
+            </div>
+          )}
         </nav>
 
         <span className={`${styles.saveStatus} ${saveFlash ? styles.show : ''}`} aria-live="polite">

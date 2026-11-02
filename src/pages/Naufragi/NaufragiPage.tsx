@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import ControlsBar from '../../components/ControlsBar/ControlsBar';
 import DiceRoller from '../../components/DiceRoller/DiceRoller';
 import CardTable from '../../components/cards/CardTable';
 import { CheckField, TextField } from '../../components/fields/Fields';
+import WelcomeDialog from '../../components/WelcomeDialog/WelcomeDialog';
 import { SheetProvider } from '../../context/SheetContext';
 import NaufragiMap from './NaufragiMap';
 import styles from './NaufragiPage.module.css';
@@ -43,10 +45,32 @@ const COND_COUNT = 5;
 const DIARY_COUNT = 20;
 const LOC_COUNT = 20;
 
+const WELCOME_KEY = 'naufragi_benvinguda_vista';
+
+function welcomeSeen(): boolean {
+  try {
+    return localStorage.getItem(WELCOME_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
 export default function NaufragiPage() {
+  // Shown automatically on the first visit; reopened from the bar's help button.
+  const [welcomeOpen, setWelcomeOpen] = useState(() => !welcomeSeen());
+  const closeWelcome = () => {
+    setWelcomeOpen(false);
+    try {
+      localStorage.setItem(WELCOME_KEY, '1');
+    } catch {
+      /* private mode etc.: it will just show again next time */
+    }
+  };
+
   return (
     <SheetProvider storageKey="naufragi_fitxa_v1" exportFallbackName="naufragi">
-      <ControlsBar title="Naufragi — Fitxa editable" />
+      <ControlsBar title="Naufragi — Fitxa editable" onHelp={() => setWelcomeOpen(true)} />
+      <WelcomeDialog open={welcomeOpen} onClose={closeWelcome} />
 
       <div className="sheet-layout">
       {/* ===== Page 1: character sheet + diary ===== */}
