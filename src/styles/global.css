@@ -38,7 +38,7 @@ body::before {
   background:
     radial-gradient(ellipse at 50% 45%, rgba(10, 14, 16, 0) 30%, rgba(10, 14, 16, 0.6) 100%),
     linear-gradient(180deg, rgba(10, 14, 16, 0.25), rgba(10, 14, 16, 0.1) 40%, rgba(10, 14, 16, 0.4)),
-    url('/img/naufragi-fons.jpg') center 68% / cover no-repeat;
+    var(--fons, url('/img/naufragi-fons.jpg')) center 68% / cover no-repeat;
 }
 
 /* --- Base inputs (shared by every sheet) --- */
