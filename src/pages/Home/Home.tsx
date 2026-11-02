@@ -28,12 +28,12 @@ export default function Home() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img className={styles.cover} src="/img/portada.jpg" alt="Portada del llibre Naufragi" />
+        <img className={styles.cover} src="/img/portada.jpg" alt="Portada de Naufragi" />
         <span className={styles.shopText}>
-          <span className={styles.shopKicker}>El llibre del joc</span>
+          <span className={styles.shopKicker}>El joc de rol</span>
           <span className={styles.shopTitle}>Aconsegueix Naufragi</span>
           <span className={styles.shopDesc}>
-            Totes les regles per naufragar en solitari.
+            En versió física o digital.
           </span>
           <span className={styles.shopCta}>Compra’l a Ko-fi →</span>
         </span>
