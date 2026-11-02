@@ -128,7 +128,7 @@ export default function NaufragiPage() {
       </div>
 
       {/* ===== Page 2: island, map, locations, events ===== */}
-      <div className={`page landscape ${styles.sheetPage}`}>
+      <div className={`page landscape ${styles.sheetPage} ${styles.p2Page}`}>
         <div className={styles.p2Grid}>
           <div className={styles.p2Illa}>
             <div className={styles.fieldRow}>

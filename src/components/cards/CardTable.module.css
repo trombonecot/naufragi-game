@@ -246,8 +246,23 @@
   background: #e74c3c;
 }
 
+/* Print: an empty board — no drawn cards, no deck art or controls,
+   just a card-sized outline where the adventure deck goes. */
 @media print {
-  .overlay {
+  .overlay,
+  .deckButtons,
+  .deckCount,
+  .zoneHint,
+  .stackShadow {
     display: none !important;
+  }
+  .deckStack .cardBackFace {
+    background: none;
+    box-shadow: none;
+    border: 1.5px dashed var(--ink);
+    opacity: 1 !important;
+  }
+  .cardBackFace::after {
+    display: none;
   }
 }

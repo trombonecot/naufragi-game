@@ -40,7 +40,12 @@ export default function NaufragiMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (data) {
       const img = new Image();
-      img.onload = () => ctx.drawImage(img, 0, 0);
+      img.onload = () => {
+        // Maps saved from a larger canvas (older layout / wider screen) are
+        // scaled down to fit instead of being cropped.
+        const scale = Math.min(1, canvas.width / img.width, canvas.height / img.height);
+        ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
+      };
       img.src = data;
     }
     lastSaved.current = data ?? null;

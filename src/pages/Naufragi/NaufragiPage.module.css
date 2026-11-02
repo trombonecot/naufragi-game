@@ -6,8 +6,9 @@
 }
 
 .sheetPage h2 {
-  font-size: 16pt;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 17pt;
+  font-weight: 400;
   margin: 14px 0 4px;
 }
 .sheetPage h3 {
@@ -17,7 +18,9 @@
 }
 
 .title {
-  font-size: 36pt;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 38pt;
   font-weight: 400;
   line-height: 1;
   margin-bottom: 2px;
@@ -106,6 +109,10 @@
 }
 
 /* Page 2 */
+.p2Page {
+  padding-top: 11mm;
+  padding-bottom: 11mm;
+}
 .p2Grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -147,7 +154,12 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
+}
+.locRow input[type='text'] {
+  font-size: 10.5pt;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .locNum {
   font-size: 10pt;

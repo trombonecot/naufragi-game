@@ -6,9 +6,9 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #2c2c2c;
-  color: #fff;
-  border: 2px solid #555;
+  background: rgba(14, 19, 22, 0.88);
+  color: var(--parchment);
+  border: 1px solid rgba(201, 164, 92, 0.6);
   font-size: 26px;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
@@ -20,7 +20,7 @@
 }
 .fab:hover {
   transform: scale(1.1);
-  background: #444;
+  background: var(--sea-dark);
 }
 
 .panel {

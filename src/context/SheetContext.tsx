@@ -88,6 +88,21 @@ export interface SheetContextValue {
   exportJSON: () => void;
   importJSON: (file: File) => Promise<void>;
   saveFlash: string | null;
+  /* named saves (partides desades al navegador) */
+  savedGames: SavedGame[];
+  saveAs: (name: string) => boolean;
+  loadSaved: (id: string) => void;
+  deleteSaved: (id: string) => void;
+  /** Suggested name for a new save (character name or fallback). */
+  suggestedName: string;
+}
+
+/** A named snapshot of the sheet stored in localStorage. */
+export interface SavedGame {
+  id: string;
+  name: string;
+  savedAt: string;
+  state: SheetState;
 }
 
 const SheetContext = createContext<SheetContextValue | null>(null);
@@ -110,6 +125,10 @@ export function SheetProvider({
   children,
 }: SheetProviderProps) {
   const [state, setState] = useState<SheetState>(() => normalize(loadJSON<SheetState>(storageKey)));
+  const savesKey = storageKey + '__partides';
+  const [savedGames, setSavedGames] = useState<SavedGame[]>(
+    () => loadJSON<SavedGame[]>(savesKey) ?? [],
+  );
   const [saveFlash, setSaveFlash] = useState<string | null>(null);
   const flashTimer = useRef<number | undefined>(undefined);
   const saveTimer = useRef<number | undefined>(undefined);
@@ -252,6 +271,63 @@ export function SheetProvider({
     [flash],
   );
 
+  /* ---- named saves ---- */
+  const persistSaves = useCallback(
+    (list: SavedGame[]) => {
+      try {
+        localStorage.setItem(savesKey, JSON.stringify(list));
+      } catch {
+        window.alert(
+          "No s'ha pogut desar: l'emmagatzematge del navegador és ple. Esborra alguna partida o exporta-la a un fitxer.",
+        );
+        return false;
+      }
+      setSavedGames(list);
+      return true;
+    },
+    [savesKey],
+  );
+
+  const saveAs = useCallback(
+    (rawName: string) => {
+      const name = rawName.trim() || exportFallbackName;
+      const entry: SavedGame = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+        name,
+        savedAt: new Date().toISOString(),
+        state,
+      };
+      // Saving with an existing name overwrites that slot.
+      const list = [entry, ...savedGames.filter((g) => g.name !== name)];
+      const ok = persistSaves(list);
+      if (ok) {
+        saveJSON(storageKey, state);
+        flash('Partida desada!');
+      }
+      return ok;
+    },
+    [state, savedGames, persistSaves, storageKey, exportFallbackName, flash],
+  );
+
+  const loadSaved = useCallback(
+    (id: string) => {
+      const game = savedGames.find((g) => g.id === id);
+      if (!game) return;
+      setState(normalize(game.state));
+      flash('Carregat!');
+    },
+    [savedGames, flash],
+  );
+
+  const deleteSaved = useCallback(
+    (id: string) => {
+      persistSaves(savedGames.filter((g) => g.id !== id));
+    },
+    [savedGames, persistSaves],
+  );
+
+  const suggestedName = getText(exportNameField) || exportFallbackName;
+
   const value = useMemo<SheetContextValue>(
     () => ({
       getField,
@@ -273,12 +349,18 @@ export function SheetProvider({
       exportJSON,
       importJSON,
       saveFlash,
+      savedGames,
+      saveAs,
+      loadSaved,
+      deleteSaved,
+      suggestedName,
     }),
     [
       getField, getText, getBool, setField, getExtra, setExtra,
       state.deck, state.drawnCards,
       drawCard, returnCard, returnAllCards, shuffleDeck, updateDrawnCard, raiseCard,
       save, clear, exportJSON, importJSON, saveFlash,
+      savedGames, saveAs, loadSaved, deleteSaved, suggestedName,
     ],
   );
 

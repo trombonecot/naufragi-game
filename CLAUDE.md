@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-Routing (`src/App.tsx`, `react-router-dom`): `/` → `Home`, `/naufragi` → `NaufragiPage`, `/portadores` → `PortadoresPage`. "Buidor estel·lar" is still a stubbed `alert`.
+Routing (`src/App.tsx`, `react-router-dom`): `/` → `Home`, `/naufragi` → `NaufragiPage`, `/portadores` → `PortadoresPage`. The Home menu only links Naufragi; Portadores de llum is shown disabled ("Properament"), though its routes still work by URL.
 
 ### Persistence — the central pattern (`src/context/SheetContext.tsx`)
 
@@ -28,7 +28,7 @@ Each sheet page wraps its content in a `<SheetProvider storageKey="…" exportFa
 - `deck: string[]` and `drawnCards: DrawnCard[]` — the card system.
 - `extra: Record<string, unknown>` — page-specific blobs (Naufragi's freehand `mapData` URL; Portadores' `territoris` map).
 
-Components read/write through the `useSheet()` hook rather than touching the DOM. State **auto-saves to `localStorage` (debounced ~600ms)** via an effect, and the same object is what `exportJSON`/`importJSON` move to/from a file. `normalize()` migrates the old vanilla-JS flat save format (top-level keys + `_deck`/`_mapData`/`_territoris`) into the nested shape, so older saves still load.
+Components read/write through the `useSheet()` hook rather than touching the DOM. State **auto-saves to `localStorage` (debounced ~600ms)** via an effect, and the same object is what `exportJSON`/`importJSON` move to/from a file. Named saves ("Desar"/"Carregar" dialogs in `ControlsBar`) are stored as a `SavedGame[]` under `${storageKey}__partides` via `saveAs`/`loadSaved`/`deleteSaved`. `normalize()` migrates the old vanilla-JS flat save format (top-level keys + `_deck`/`_mapData`/`_territoris`) into the nested shape, so older saves still load.
 
 **To add a field:** give it a unique key and bind it with `<TextField fieldKey="…">` / `<CheckField fieldKey="…">` (`src/components/fields/Fields.tsx`). It then persists automatically — no wiring needed. For richer per-page state, store it under `extra` via `getExtra`/`setExtra`.
 
@@ -45,7 +45,7 @@ Components read/write through the `useSheet()` hook rather than touching the DOM
 
 ### Styling
 
-Per-component **CSS Modules** (`*.module.css`) plus one global stylesheet (`src/styles/global.css`) for design tokens (`--ink`, `--line`, …), base inputs, the `.sheet-layout`/`.page` wrappers, and print rules. Print uses a `landscape` class + named `@page` to mix portrait and landscape pages. EB Garamond is loaded in `index.html`.
+Per-component **CSS Modules** (`*.module.css`) plus one global stylesheet (`src/styles/global.css`) for design tokens (`--ink`, `--line`, …), base inputs, the `.sheet-layout`/`.page` wrappers, and print rules. Print uses a `landscape` class + named `@page` to mix portrait and landscape pages. EB Garamond (body) and IM Fell English (display, `--font-display`) are loaded in `index.html`, matching the printed rulebook. The screen background is an old shipwreck oil painting (`public/img/naufragi-fons.jpg`, from the game's layout assets) on `body::before`; pages use a procedural SVG-noise paper (`--paper-texture`: edge gradient + `public/img/paper-mottle.svg`). Both are dropped in print.
 
 ### Adding a new game mode
 
