@@ -36,7 +36,7 @@ Components read/write through the `useSheet()` hook rather than touching the DOM
 
 - `ControlsBar` — fixed top bar (save / export / import / print / clear + save flash). Pulls all actions from `useSheet()`.
 - `DiceRoller` — floating FAB + 2d6 CSS-3D dice panel; self-contained, no persistence.
-- `cards/CardTable` + `cards/PlayingCard` — the 52-card adventure deck. Cards are drawn onto an absolutely-positioned overlay and dragged with pointer events (position stored in `drawnCards`). `<CardTable orientation="landscape" />` for landscape sheets (Naufragi), default portrait (Portadores). Card logic/types live in `src/lib/cards.ts`.
+- `cards/CardTable` + `cards/PlayingCard` — the 52-card adventure deck (faces use the rulebook suit glyphs via `cards/SuitIcon`; the back masks `public/img/palmera-carta.png` in brass). Cards are drawn onto an absolutely-positioned overlay and dragged with pointer events (position stored in `drawnCards`). `<CardTable orientation="landscape" />` for landscape sheets (Naufragi), default portrait (Portadores). Card logic/types live in `src/lib/cards.ts`.
 
 ### Pages (`src/pages/`)
 

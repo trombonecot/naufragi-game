@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import { parseCardId, type DrawnCard } from '../../lib/cards';
 import { useSheet } from '../../context/SheetContext';
+import SuitIcon from './SuitIcon';
 import styles from './CardTable.module.css';
 
 export default function PlayingCard({
@@ -28,6 +29,7 @@ export default function PlayingCard({
   }, [card.x, card.y, card.zIndex]);
 
   if (!suit) return null;
+  const isCourt = rank === 'J' || rank === 'Q' || rank === 'K';
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -79,10 +81,24 @@ export default function PlayingCard({
       >
         ×
       </button>
-      <div className={styles.cardSimple}>
-        <span className={styles.rank}>{rank}</span>
-        <span className={styles.suitSym}>{suit.sym}</span>
+      <span className={styles.corner}>
+        <span className={styles.cornerRank}>{rank}</span>
+        <SuitIcon suit={suit.id} className={styles.cornerSuit} />
+      </span>
+      <div className={styles.cardCenter}>
+        {isCourt ? (
+          <span className={styles.courtFrame}>
+            <span className={styles.courtLetter}>{rank}</span>
+            <SuitIcon suit={suit.id} className={styles.courtSuit} />
+          </span>
+        ) : (
+          <SuitIcon suit={suit.id} className={rank === 'A' ? styles.aceSuit : styles.pip} />
+        )}
       </div>
+      <span className={`${styles.corner} ${styles.cornerFlip}`}>
+        <span className={styles.cornerRank}>{rank}</span>
+        <SuitIcon suit={suit.id} className={styles.cornerSuit} />
+      </span>
     </div>
   );
 }

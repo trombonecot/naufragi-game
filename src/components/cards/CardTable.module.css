@@ -68,26 +68,26 @@
   width: 100%;
 }
 .deckButtons button {
-  font-family: system-ui, sans-serif;
-  font-size: 12px;
-  padding: 5px 10px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  background: #f0f0f0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 4px 10px;
+  border: 1px solid rgba(26, 26, 26, 0.35);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--ink);
   cursor: pointer;
   transition: background 0.12s;
 }
 .deckButtons button:hover {
-  background: #ddd;
+  background: rgba(201, 164, 92, 0.22);
 }
 .primary {
-  background: linear-gradient(135deg, #c9952b, #e6b84d) !important;
-  border-color: #b8862a !important;
-  font-weight: 600;
-  color: #1a1a1a;
+  background: var(--sea-dark) !important;
+  border-color: var(--sea-dark) !important;
+  color: var(--parchment) !important;
 }
 .primary:hover {
-  background: linear-gradient(135deg, #d9a53b, #f0c55d) !important;
+  background: #26343a !important;
 }
 
 /* --- Deck stack --- */
@@ -102,8 +102,8 @@
   width: 76px;
   height: 106px;
   border-radius: 7px;
-  background: #000;
-  border: 1px solid #333;
+  background: #0f191d;
+  border: 1px solid rgba(201, 164, 92, 0.4);
 }
 .stackShadow:nth-child(1) {
   top: 4px;
@@ -115,43 +115,39 @@
   left: 2px;
   opacity: 0.5;
 }
-.deckStack .cardBackFace {
-  position: relative;
-  z-index: 2;
-}
-.deckCount {
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: system-ui, sans-serif;
-  font-size: 12px;
-  color: #999;
-  white-space: nowrap;
-}
-.deckStack.empty .stackShadow,
-.deckStack.empty .cardBackFace {
-  opacity: 0.25;
-}
-
+.deckStack /* Card back: deep-sea lacquer, brass double frame, engraved palm. */
 .cardBackFace {
   width: 76px;
   height: 106px;
   border-radius: 7px;
-  border: 1.5px solid #333;
-  background: #000;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.25);
+  border: 1px solid #0b1215;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(70, 110, 120, 0.45), rgba(0, 0, 0, 0) 70%),
+    repeating-linear-gradient(45deg, rgba(201, 164, 92, 0.07) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-45deg, rgba(201, 164, 92, 0.07) 0 1px, transparent 1px 6px),
+    linear-gradient(160deg, #1f3036, #0f191d);
+  box-shadow:
+    inset 0 0 0 3px #142024,
+    inset 0 0 0 4px rgba(201, 164, 92, 0.75),
+    1px 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+}
+.cardBackFace::before {
+  content: '';
+  position: absolute;
+  inset: 14px 12px 12px;
+  background: var(--brass);
+  -webkit-mask: url('/img/palmera-carta.png') center / contain no-repeat;
+  mask: url('/img/palmera-carta.png') center / contain no-repeat;
+  opacity: 0.9;
 }
 .cardBackFace::after {
   content: '';
-  width: 56px;
-  height: 86px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(201, 164, 92, 0.45);
   border-radius: 4px;
 }
 
@@ -166,29 +162,117 @@
   overflow: visible;
 }
 
+/* Card face: aged paper, inked suits from the rulebook. */
 .card {
   width: 76px;
   height: 106px;
   border-radius: 7px;
-  background: #fff;
-  border: 1.5px solid #bbb;
-  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(255, 252, 244, 0) 50%, rgba(170, 140, 90, 0.22) 100%),
+    #f6efdf;
+  border: 1px solid #a8956f;
+  box-shadow:
+    inset 0 0 0 3px #f6efdf,
+    inset 0 0 0 3.6px rgba(80, 60, 30, 0.35),
+    1px 2px 6px rgba(0, 0, 0, 0.25);
   position: absolute;
   cursor: grab;
   user-select: none;
   pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 3px 5px;
-  font-family: 'Georgia', serif;
+  font-family: var(--font-display);
   transition: box-shadow 0.12s, transform 0.12s;
 }
 .card:hover {
-  box-shadow: 2px 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 0 0 3px #f6efdf,
+    inset 0 0 0 3.6px rgba(80, 60, 30, 0.35),
+    2px 4px 14px rgba(0, 0, 0, 0.35);
   transform: translateY(-2px);
 }
 .card:hover .returnBtn {
+  opacity: 1;
+}
+.card.dragging {
+  cursor: grabbing;
+  box-shadow:
+    inset 0 0 0 3px #f6efdf,
+    inset 0 0 0 3.6px rgba(80, 60, 30, 0.35),
+    6px 10px 24px rgba(0, 0, 0, 0.4);
+  transform: scale(1.06) rotate(2deg);
+  transition: none;
+}
+.red {
+  color: #9e2b20;
+}
+.black {
+  color: #1f1a14;
+}
+
+.corner {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  gap: 1px;
+}
+.cornerFlip {
+  top: auto;
+  left: auto;
+  bottom: 6px;
+  right: 7px;
+  transform: rotate(180deg);
+}
+.cornerRank {
+  font-size: 15px;
+}
+.cornerSuit {
+  width: 9px;
+  height: 9px;
+}
+
+.cardCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pip {
+  width: 30px;
+  height: 30px;
+}
+.aceSuit {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 0.5px currentColor);
+}
+.courtFrame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 44px;
+  height: 64px;
+  border: 1px solid currentColor;
+  border-radius: 22px / 30px;
+  outline: 1px solid rgba(80, 60, 30, 0.3);
+  outline-offset: 2px;
+}
+.courtLetter {
+  font-size: 30px;
+  font-style: italic;
+  line-height: 0.9;
+}
+.courtSuit {
+  width: 13px;
+  height: 13px;
+}
+
+.returnBtn {
   opacity: 1;
 }
 .card.dragging {
@@ -257,11 +341,12 @@
     display: none !important;
   }
   .deckStack .cardBackFace {
-    background: none;
-    box-shadow: none;
+    background: none !important;
+    box-shadow: none !important;
     border: 1.5px dashed var(--ink);
     opacity: 1 !important;
   }
+  .cardBackFace::before,
   .cardBackFace::after {
     display: none;
   }
