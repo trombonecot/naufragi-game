@@ -330,6 +330,57 @@
   background: #e74c3c;
 }
 
+/* ---------- Responsive (screen only) ---------- */
+@media screen and (max-width: 1180px) {
+  .cardPage,
+  .cardPage.landscape {
+    width: 100%;
+    max-width: 297mm;
+    min-height: 0;
+    padding: 20px 18px;
+  }
+  .playSurface,
+  .landscape .playSurface {
+    height: 560px;
+  }
+}
+@media screen and (max-width: 700px) {
+  /* Deck on top, then the two piles stacked. */
+  .playSurface,
+  .landscape .playSurface {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+  .deckZone {
+    order: -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 14px 22px;
+  }
+  .deckZone h2 br {
+    display: none;
+  }
+  .deckZone h2 {
+    width: 100%;
+  }
+  .deckButtons {
+    width: auto;
+    margin-top: 0;
+  }
+  .deckButtons button {
+    padding: 7px 14px;
+  }
+  .deckCount {
+    bottom: -20px;
+  }
+  .pileZone {
+    min-height: 240px;
+    border-top: none;
+  }
+}
+
 /* Print: an empty board — no drawn cards, no deck art or controls,
    just a card-sized outline where the adventure deck goes. */
 @media print {

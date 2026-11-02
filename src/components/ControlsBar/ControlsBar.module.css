@@ -133,6 +133,15 @@
   .actions {
     gap: 4px;
   }
+  .group + .group {
+    margin-left: 0;
+  }
+  .actions button {
+    padding: 8px 7px;
+  }
+  .home {
+    padding: 6px 4px;
+  }
 }
 
 /* ---------- Dialogs ---------- */

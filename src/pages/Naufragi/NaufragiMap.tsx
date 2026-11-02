@@ -2,11 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useSheet } from '../../context/SheetContext';
 import styles from './NaufragiMap.module.css';
 
+// Fixed drawing resolution (2× the desktop on-screen size), independent of how
+// wide the map is displayed, so a map drawn on a phone looks the same on desktop.
+const MAP_W = 640;
+const MAP_H = 922;
+/** Display width the brush sizes were tuned for (desktop column). */
+const REF_W = 320;
+
 /** Freehand drawing canvas; the image is persisted as a data URL in extra.mapData. */
 export default function NaufragiMap() {
   const { getExtra, setExtra } = useSheet();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
   const drawing = useRef(false);
   const lastSaved = useRef<string | null>(null);
   const [color, setColor] = useState('#1a1a1a');
@@ -16,13 +22,12 @@ export default function NaufragiMap() {
   sizeRef.current = size;
   colorRef.current = color;
 
-  // Size the canvas to its container once on mount.
+  // Fixed internal resolution; CSS scales it to the container.
   useEffect(() => {
     const canvas = canvasRef.current;
-    const wrap = wrapRef.current;
-    if (!canvas || !wrap) return;
-    canvas.width = wrap.offsetWidth;
-    canvas.height = wrap.offsetHeight;
+    if (!canvas) return;
+    canvas.width = MAP_W;
+    canvas.height = MAP_H;
     const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.lineCap = 'round';
@@ -41,9 +46,8 @@ export default function NaufragiMap() {
     if (data) {
       const img = new Image();
       img.onload = () => {
-        // Maps saved from a larger canvas (older layout / wider screen) are
-        // scaled down to fit instead of being cropped.
-        const scale = Math.min(1, canvas.width / img.width, canvas.height / img.height);
+        // Older saves were stored at the on-screen size; scale them to fit.
+        const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
         ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
       };
       img.src = data;
@@ -68,7 +72,7 @@ export default function NaufragiMap() {
     const p = point(e);
     ctx.moveTo(p.x, p.y);
     ctx.strokeStyle = colorRef.current;
-    ctx.lineWidth = sizeRef.current;
+    ctx.lineWidth = sizeRef.current * (MAP_W / REF_W);
   }
 
   function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
@@ -105,7 +109,7 @@ export default function NaufragiMap() {
 
   return (
     <>
-      <div className={styles.mapArea} ref={wrapRef}>
+      <div className={styles.mapArea}>
         <canvas
           ref={canvasRef}
           onPointerDown={onPointerDown}

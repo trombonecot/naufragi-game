@@ -29,7 +29,7 @@ body {
   min-height: 100vh;
 }
 
-/* Old oil painting of a shipwreck as the backdrop, darkened and fixed. */
+/* Claude-Joseph Vernet, "The Shipwreck" (1772), National Gallery of Art, CC0 — darkened and fixed. */
 body::before {
   content: '';
   position: fixed;
@@ -38,7 +38,7 @@ body::before {
   background:
     radial-gradient(ellipse at 50% 45%, rgba(10, 14, 16, 0) 30%, rgba(10, 14, 16, 0.6) 100%),
     linear-gradient(180deg, rgba(10, 14, 16, 0.25), rgba(10, 14, 16, 0.1) 40%, rgba(10, 14, 16, 0.4)),
-    var(--fons, url('/img/naufragi-fons.jpg')) center 68% / cover no-repeat;
+    url('/img/naufragi-fons.jpg') center 60% / cover no-repeat;
 }
 
 /* --- Base inputs (shared by every sheet) --- */
@@ -85,6 +85,21 @@ input[type='checkbox'] {
 }
 .sheet-layout > .page:first-of-type {
   margin-top: calc(var(--bar-h) + 16px);
+}
+
+@media screen and (max-width: 700px) {
+  .sheet-layout {
+    padding: 12px 8px;
+    gap: 16px;
+  }
+  .sheet-layout > .page:first-of-type {
+    margin-top: calc(var(--bar-h) + 8px);
+  }
+  /* 16px+ stops iOS from zooming in on focus. */
+  input[type='text'],
+  textarea {
+    font-size: 16px;
+  }
 }
 
 /* --- A4 page sheet --- */

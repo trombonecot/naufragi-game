@@ -180,3 +180,117 @@
 .esdevRow input[type='text'] {
   flex: 1;
 }
+
+/* ---------- Responsive (screen only; print keeps the A4 layout) ---------- */
+@media screen and (max-width: 1180px) {
+  /* Let inputs shrink below their intrinsic ~20ch width. */
+  .sheetPage input[type='text'] {
+    min-width: 0;
+  }
+  .p1Grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .equipGrid,
+  .condicionsGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .sheetPage {
+    width: 100%;
+    max-width: 297mm;
+    min-height: 0;
+    padding: 24px 22px;
+  }
+  .p2Page {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  /* Page 2 in two columns: map | locations, then events | ally + leaving. */
+  .p2Grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 10px 24px;
+  }
+  .p2Illa {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .p2Loc {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .p2Esdev {
+    grid-column: 1;
+    grid-row: 2 / 4;
+  }
+  .p2Aliat {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .p2Sortir {
+    grid-column: 2;
+    grid-row: 3;
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .sheetPage,
+  .p2Page {
+    padding: 20px 16px;
+  }
+  .title {
+    font-size: 32pt;
+  }
+  /* Everything in a single column, in reading order. */
+  .p1Grid,
+  .p2Grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .p2Illa,
+  .p2Loc,
+  .p2Esdev,
+  .p2Aliat,
+  .p2Sortir {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .p2Aliat {
+    border-top: none;
+    padding-top: 0;
+  }
+  .sortirBox {
+    border-top: none;
+    padding-top: 0;
+  }
+  .instructions {
+    font-size: 10.5pt;
+  }
+  /* Larger touch targets. */
+  .diaryRow,
+  .locRow,
+  .esdevRow,
+  .equipItem {
+    margin-bottom: 6px;
+  }
+  .sheetPage input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+  .esdevLabel {
+    font-size: 11pt;
+    min-width: 72px;
+  }
+  .locNum {
+    font-size: 11pt;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .equipGrid,
+  .condicionsGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fieldRow label {
+    min-width: 0;
+  }
+}

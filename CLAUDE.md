@@ -45,7 +45,7 @@ Components read/write through the `useSheet()` hook rather than touching the DOM
 
 ### Styling
 
-Per-component **CSS Modules** (`*.module.css`) plus one global stylesheet (`src/styles/global.css`) for design tokens (`--ink`, `--line`, …), base inputs, the `.sheet-layout`/`.page` wrappers, and print rules. Print uses a `landscape` class + named `@page` to mix portrait and landscape pages. EB Garamond (body) and IM Fell English (display, `--font-display`) are loaded in `index.html`, matching the printed rulebook. The screen background is an old shipwreck oil painting (`public/img/naufragi-fons.jpg`, from the game's layout assets) on `body::before`; pages use a procedural SVG-noise paper (`--paper-texture`: edge gradient + `public/img/paper-mottle.svg`). Both are dropped in print.
+Per-component **CSS Modules** (`*.module.css`) plus one global stylesheet (`src/styles/global.css`) for design tokens (`--ink`, `--line`, …), base inputs, the `.sheet-layout`/`.page` wrappers, and print rules. Print uses a `landscape` class + named `@page` to mix portrait and landscape pages. EB Garamond (body) and IM Fell English (display, `--font-display`) are loaded in `index.html`, matching the printed rulebook. The screen background is Vernet's *The Shipwreck* (1772, NGA open access, CC0; `public/img/naufragi-fons.jpg`, 2400px) on `body::before`; pages use a procedural SVG-noise paper (`--paper-texture`: edge gradient + `public/img/paper-mottle.svg`). Both are dropped in print. Sheets reflow on screen below 1180px (two columns) and 700px (one column); print always keeps the A4 layout.
 
 ### Adding a new game mode
 

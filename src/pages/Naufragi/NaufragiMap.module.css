@@ -48,3 +48,22 @@
   align-items: center;
   gap: 3px;
 }
+
+/* Fluid layouts: keep the map's proportions (matches the fixed canvas size). */
+@media screen and (max-width: 1180px) {
+  .mapArea {
+    height: auto;
+    aspect-ratio: 640 / 922;
+  }
+}
+@media screen and (max-width: 700px) {
+  .mapControls {
+    font-size: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .mapControls button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}

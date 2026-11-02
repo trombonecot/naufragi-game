@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSheet } from '../../context/SheetContext';
 import PlayingCard from './PlayingCard';
 import styles from './CardTable.module.css';
@@ -15,6 +15,15 @@ export default function CardTable({
   const { deck, drawnCards, drawCard, shuffleDeck, returnAllCards } = useSheet();
   const pageRef = useRef<HTMLDivElement>(null);
   const deckRef = useRef<HTMLDivElement>(null);
+  // Track the page width so cards placed on a wider screen stay visible on narrow ones.
+  const [pageWidth, setPageWidth] = useState<number | null>(null);
+  useEffect(() => {
+    const el = pageRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setPageWidth(el.clientWidth));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   function handleDraw() {
     if (deck.length === 0) return;
@@ -23,8 +32,15 @@ export default function CardTable({
     if (deckRef.current && pageRef.current) {
       const deckRect = deckRef.current.getBoundingClientRect();
       const pageRect = pageRef.current.getBoundingClientRect();
-      x = deckRect.left - pageRect.left + 90 + (drawnCards.length % 8) * 28;
-      y = deckRect.top - pageRect.top - 10 + Math.floor(drawnCards.length / 8) * 30;
+      const n = drawnCards.length;
+      if (pageRect.width < 700) {
+        // Narrow (stacked) layout: fan the cards out below the deck.
+        x = 20 + (n % 8) * 28;
+        y = deckRect.bottom - pageRect.top + 40 + Math.floor(n / 8) * 30;
+      } else {
+        x = deckRect.left - pageRect.left + 90 + (n % 8) * 28;
+        y = deckRect.top - pageRect.top - 10 + Math.floor(n / 8) * 30;
+      }
     }
     drawCard({ x, y });
   }
@@ -44,7 +60,7 @@ export default function CardTable({
 
         <div className={styles.deckZone}>
           <h2>
-            Pila
+            Pila{' '}
             <br />
             d'aventura
           </h2>
@@ -77,7 +93,12 @@ export default function CardTable({
 
       <div className={styles.overlay}>
         {drawnCards.map((card) => (
-          <PlayingCard key={card.id} card={card} pageRef={pageRef} />
+          <PlayingCard
+            key={card.id}
+            card={card}
+            pageRef={pageRef}
+            maxX={pageWidth === null ? undefined : pageWidth - 84}
+          />
         ))}
       </div>
     </div>

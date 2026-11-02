@@ -7,9 +7,12 @@ import styles from './CardTable.module.css';
 export default function PlayingCard({
   card,
   pageRef,
+  maxX,
 }: {
   card: DrawnCard;
   pageRef: RefObject<HTMLDivElement>;
+  /** Rightmost left-offset that keeps the card on the page (display only). */
+  maxX?: number;
 }) {
   const { suit, rank } = parseCardId(card.id);
   const { returnCard, updateDrawnCard, raiseCard } = useSheet();
@@ -63,7 +66,7 @@ export default function PlayingCard({
   return (
     <div
       className={`${styles.card} ${styles[suit.color]} ${dragging ? styles.dragging : ''}`}
-      style={{ left: pos.x, top: pos.y, zIndex: z }}
+      style={{ left: maxX === undefined ? pos.x : Math.max(0, Math.min(pos.x, maxX)), top: pos.y, zIndex: z }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
