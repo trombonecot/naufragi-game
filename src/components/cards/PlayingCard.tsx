@@ -31,7 +31,6 @@ export default function PlayingCard({
     setZ(card.zIndex);
   }, [card.x, card.y, card.zIndex]);
 
-  if (!suit) return null;
   const isCourt = rank === 'J' || rank === 'Q' || rank === 'K';
 
   function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
@@ -44,24 +43,69 @@ export default function PlayingCard({
     offset.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
 
-  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (!active.current || !pageRef.current) return;
-    e.preventDefault();
+  // While dragging near the top/bottom edge, keep scrolling the page so the
+  // card can reach piles that are off-screen (stacked layout on phones).
+  const scrollTimer = useRef<number | null>(null);
+  const lastPointer = useRef({ x: 0, y: 0 });
+
+  function moveTo(clientX: number, clientY: number) {
+    if (!pageRef.current) return;
     const pageRect = pageRef.current.getBoundingClientRect();
     const next = {
-      x: e.clientX - offset.current.x - pageRect.left,
-      y: e.clientY - offset.current.y - pageRect.top,
+      x: clientX - offset.current.x - pageRect.left,
+      y: clientY - offset.current.y - pageRect.top,
     };
     posRef.current = next;
     setPos(next);
   }
 
+  function stopAutoScroll() {
+    if (scrollTimer.current !== null) {
+      window.clearInterval(scrollTimer.current);
+      scrollTimer.current = null;
+    }
+  }
+
+  function updateAutoScroll(clientY: number) {
+    const EDGE = 60;
+    const top = 70; // below the fixed controls bar
+    const dir = clientY < top + EDGE ? -1 : clientY > window.innerHeight - EDGE ? 1 : 0;
+    if (dir === 0) {
+      stopAutoScroll();
+      return;
+    }
+    if (scrollTimer.current !== null) return;
+    scrollTimer.current = window.setInterval(() => {
+      const y = lastPointer.current.y;
+      const d = y < top + EDGE ? -1 : y > window.innerHeight - EDGE ? 1 : 0;
+      if (d === 0 || !active.current) {
+        stopAutoScroll();
+        return;
+      }
+      window.scrollBy(0, d * 12);
+      moveTo(lastPointer.current.x, lastPointer.current.y);
+    }, 16);
+  }
+
+  useEffect(() => stopAutoScroll, []);
+
+  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+    if (!active.current || !pageRef.current) return;
+    e.preventDefault();
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+    moveTo(e.clientX, e.clientY);
+    updateAutoScroll(e.clientY);
+  }
+
   function endDrag() {
     if (!active.current) return;
     active.current = false;
+    stopAutoScroll();
     setDragging(false);
     updateDrawnCard(card.id, { x: posRef.current.x, y: posRef.current.y, zIndex: z });
   }
+
+  if (!suit) return null;
 
   return (
     <div

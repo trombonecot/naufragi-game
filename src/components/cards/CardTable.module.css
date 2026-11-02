@@ -178,6 +178,11 @@
   position: absolute;
   cursor: grab;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  /* Touch: the finger drags the card instead of scrolling the page
+     (otherwise the browser fires pointercancel and the drag dies). */
+  touch-action: none;
   pointer-events: auto;
   font-family: var(--font-display);
   transition: box-shadow 0.12s, transform 0.12s;
@@ -328,6 +333,22 @@
 .returnBtn:hover {
   transform: scale(1.2);
   background: #e74c3c;
+}
+
+/* Touch screens have no hover: keep the return button visible and bigger. */
+@media (hover: none) {
+  .returnBtn {
+    opacity: 0.9;
+    width: 28px;
+    height: 28px;
+    top: -12px;
+    right: -12px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .card:hover {
+    transform: none;
+  }
 }
 
 /* ---------- Responsive (screen only) ---------- */
