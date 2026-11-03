@@ -1,39 +1,221 @@
+/* Map page: big map on the left, locations legend on the right. */
+.mapPage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72mm;
+  gap: 0 10mm;
+}
+.mapCol,
+.legendCol {
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.titleRow label {
+  font-size: 13pt;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.instructions {
+  font-size: 9.5pt;
+  font-style: italic;
+  color: #444;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.mapPage .legendCol h2 {
+  font-family: var(--font-display);
+  font-size: 17pt;
+  font-weight: 400;
+  margin: 0 0 4px;
+}
+
+/* Same aspect ratio as the canvas, so pins (stored in %) line up everywhere. */
 .mapArea {
   width: 100%;
-  height: 122mm;
+  aspect-ratio: 1100 / 950;
   border: 1px solid var(--line);
   border-radius: 4px;
-  margin-top: 6px;
   position: relative;
   overflow: hidden;
   cursor: crosshair;
 }
 .mapArea canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
   touch-action: none;
 }
+.mapArea canvas.preview {
+  pointer-events: none;
+}
+/* The preview overlay acts as the cursor for stamps and the eraser. */
+.mapArea.previewing {
+  cursor: none;
+}
+.mapArea.placing {
+  cursor: copy;
+  outline: 2px dashed #8a6d2b;
+  outline-offset: 2px;
+}
+.placingHint {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
+  background: rgba(255, 250, 235, 0.95);
+  border: 1px solid #8a6d2b;
+  border-radius: 4px;
+  padding: 3px 8px;
+  pointer-events: none;
+  white-space: nowrap;
+}
 
+/* ----- Location pins ----- */
+.pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* Centre the number circle on the point. */
+  transform: translate(-11px, -50%);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  z-index: 1;
+}
+.pinNum {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: #fffaf0;
+  color: var(--ink);
+  font-size: 10.5pt;
+  font-weight: 600;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.pinLabel {
+  font-size: 10.5pt;
+  font-style: italic;
+  white-space: nowrap;
+  color: var(--ink);
+  text-shadow:
+    0 0 2px #fffaf0,
+    0 0 2px #fffaf0,
+    0 0 3px #fffaf0;
+}
+.ghost {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.85;
+}
+
+/* ----- Legend ----- */
+.locRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.locRow input[type='text'] {
+  font-size: 10.5pt;
+  padding-top: 0;
+  padding-bottom: 0;
+  min-width: 0;
+}
+.locNum {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px dashed #9a8a6a;
+  font-size: 9.5pt;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.locNum:hover {
+  border-style: solid;
+  border-color: var(--ink);
+}
+.locNum.placed {
+  border: 1.5px solid var(--ink);
+  font-weight: 600;
+}
+.locNum.armed {
+  background: #8a6d2b;
+  border-color: #8a6d2b;
+  color: #fff;
+}
+
+/* ----- Controls ----- */
 .mapControls {
   display: flex;
-  gap: 6px;
-  margin-top: 4px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 5px;
   font-family: system-ui, sans-serif;
   font-size: 11px;
   align-items: center;
+}
+.toolGroup {
+  display: flex;
+  gap: 2px;
 }
 .mapControls button {
   font-family: system-ui, sans-serif;
   font-size: 11px;
   padding: 2px 8px;
+  min-height: 24px;
   border: 1px solid #aaa;
   border-radius: 3px;
   background: #f0f0f0;
   cursor: pointer;
 }
-.mapControls button:hover {
+.mapControls button:hover:not(:disabled) {
   background: #ddd;
+}
+.mapControls button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.mapControls button.on {
+  background: #3a3226;
+  border-color: #3a3226;
+  color: #fff;
+}
+.stampBtn {
+  padding: 1px 2px !important;
+  display: flex;
+  align-items: center;
+}
+.stampBtn.on .stampIcon {
+  filter: invert(1);
+}
+.stampIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 .colorPick {
   width: 28px;
@@ -49,21 +231,45 @@
   gap: 3px;
 }
 
-/* Fluid layouts: keep the map's proportions (matches the fixed canvas size). */
+/* ----- Responsive (screen only) ----- */
 @media screen and (max-width: 1180px) {
-  .mapArea {
-    height: auto;
-    aspect-ratio: 640 / 922;
+  .mapPage {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 0 20px;
   }
 }
 @media screen and (max-width: 700px) {
+  .mapPage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .legendCol {
+    margin-top: 16px;
+  }
+  .instructions {
+    font-size: 10.5pt;
+  }
+  .locRow {
+    margin-bottom: 6px;
+  }
+  .locNum {
+    width: 28px;
+    height: 28px;
+    font-size: 11pt;
+  }
   .mapControls {
     font-size: 14px;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
   }
   .mapControls button {
     font-size: 14px;
-    padding: 6px 12px;
+    padding: 6px 10px;
+    min-height: 36px;
+  }
+  .stampIcon {
+    width: 30px;
+    height: 30px;
+  }
+  .pinLabel {
+    font-size: 10pt;
   }
 }

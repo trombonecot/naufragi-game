@@ -43,7 +43,6 @@ function esdevKey(item: EsdevItem): string {
 const EQUIP_COUNT = 10;
 const COND_COUNT = 5;
 const DIARY_COUNT = 20;
-const LOC_COUNT = 20;
 
 const WELCOME_KEY = 'naufragi_benvinguda_vista';
 
@@ -151,33 +150,14 @@ export default function NaufragiPage() {
         </div>
       </div>
 
-      {/* ===== Page 2: island, map, locations, events ===== */}
+      {/* ===== Page 2: island map + locations ===== */}
+      <div className={`page landscape ${styles.sheetPage} ${styles.p2Page}`}>
+        <NaufragiMap />
+      </div>
+
+      {/* ===== Page 3: events, ally, leaving the island ===== */}
       <div className={`page landscape ${styles.sheetPage} ${styles.p2Page}`}>
         <div className={styles.p2Grid}>
-          <div className={styles.p2Illa}>
-            <div className={styles.fieldRow}>
-              <label style={{ fontSize: '13pt', fontWeight: 600 }}>Nom de l'illa</label>
-              <TextField fieldKey="illa_nom" style={{ flex: 1 }} />
-            </div>
-            <p className={styles.instructions}>
-              Cada vegada que descobreixis una localització dibuixa-la al mapa.
-            </p>
-            <NaufragiMap />
-          </div>
-
-          <div className={styles.p2Loc}>
-            <h2>Localitzacions</h2>
-            <p className={styles.instructions}>
-              Apunta aquí la llegenda de les diferents localitzacions que vagis descobrint al mapa.
-            </p>
-            {Array.from({ length: LOC_COUNT }, (_, i) => (
-              <div className={styles.locRow} key={i}>
-                <span className={styles.locNum}>{i + 1}</span>
-                <TextField fieldKey={`loc_${i + 1}`} style={{ flex: 1 }} />
-              </div>
-            ))}
-          </div>
-
           <div className={styles.p2Esdev}>
             <h2>Esdeveniments</h2>
             <p className={styles.instructions}>
@@ -239,7 +219,7 @@ export default function NaufragiPage() {
         </div>
       </div>
 
-      {/* ===== Page 3: cards ===== */}
+      {/* ===== Page 4: cards ===== */}
       <CardTable orientation="landscape" />
       </div>
 

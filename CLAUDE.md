@@ -43,7 +43,7 @@ Components read/write through the `useSheet()` hook rather than touching the DOM
 
 ### Pages (`src/pages/`)
 
-- `Naufragi/` — landscape A4 sheet (character + diary, island + freehand canvas map, cards). `NaufragiMap` is a `<canvas>` serialized to a data URL in `extra.mapData`.
+- `Naufragi/` — landscape A4 sheets: character + diary; island map + locations legend (own page); events/ally/leaving; cards. `NaufragiMap` is a `<canvas>` serialized to a data URL in `extra.mapData`, with pencil/path/eraser, stamps (`stamps.ts`, drawn with canvas paths) and in-memory undo. Location numbers are dragged (or tapped, then tap the map) from the legend onto the map as pins stored in `extra.mapPins` (`{ [locNum]: {x,y} }` in % of the map); pin labels read the `loc_N` field live.
 - `Portadores/` — portrait sheet (Guardià de l'esperança), cards, and `PortadoresMap`: an SVG flat-top hex grid. Clicking a hex opens a type picker; assigning a type auto-creates a linked **territory card** (keyed by hex index, named by coordinate like "A1") in the side panel. Territory types/geometry are in `territoris.ts`; the moves list in `moviments.ts`.
 
 ### Styling
